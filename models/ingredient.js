@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { handleMongooseError } = require("../helpers/index");
+const { handleMongooseError } = require("../helpers");
 const schema = mongoose.Schema(
   {
     ttl: {
