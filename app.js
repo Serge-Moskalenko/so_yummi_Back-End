@@ -6,8 +6,8 @@ require("dotenv").config();
 const usersRouter = require("./routes/api/users");
 
 const app = express();
-const recipesRouter = require("./routes/recipes");
-const ingredientsRouter = require("./routes/ingredients");
+const recipesRouter = require("./routes/api/recipes");
+const ingredientsRouter = require("./routes/api/ingredients");
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));

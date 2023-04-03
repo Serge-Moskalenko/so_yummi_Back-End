@@ -2,11 +2,11 @@ const express = require("express");
 const {
   ingredientsList,
   recipesByIngredient,
-} = require("../controllers/ingredients");
+} = require("../../controllers/ingredients");
 
 const router = express.Router();
 
 router.get("/list", ingredientsList);
-router.get("/", recipesByIngredient);
+router.get("/:ingredient", recipesByIngredient);
 
 module.exports = router;
