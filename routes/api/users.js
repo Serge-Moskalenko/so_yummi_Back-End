@@ -6,6 +6,7 @@ const {
   validateBody,
   authMiddleware,
   isValidId,
+  upload,
 } = require("../../middlewares");
 const {
   userJoiRegisterSchema,
@@ -19,12 +20,11 @@ router.get("/google-redirect", googleRedirect);
 router.get("/login", validateBody(userJoiLoginSchema), ctrl.login);
 router.get("/current", authMiddleware, ctrl.current);
 router.post("/logout", authMiddleware, ctrl.logout);
-// router.patch(
-//   "/:userId",
-//   authMiddleware,
-//   isValidId,
-//   validateBody(updateUserJoiSchema),
-//   ctrl.updateUserById
-// );
+router.patch(
+  "/updateUser",
+  authMiddleware,
+  upload.single("avatar"),
+  ctrl.updateUser
+);
 
 module.exports = router;
