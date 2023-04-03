@@ -28,7 +28,14 @@ const recipesCategory = async (req, res) => {
 ///////
 
 const recipesList = async (req, res) => {
-  const recipes = await Recipes.find();
+  const { categoryByMain } = req.params;
+
+  const recipes = await Recipes.find({
+    category: { $regex: categoryByMain, $options: "i" },
+  })
+    .limit(4)
+    .sort({ favorites: -1 });
+
   if (!recipes) {
     throw HttpError(404, "Not found");
   }
@@ -39,7 +46,9 @@ const recipesList = async (req, res) => {
 const recipesByCategory = async (req, res) => {
   const { category = "Beef" } = req.params;
   console.log(category);
-  const result = await Recipes.find({ category: { $eq: category } }).limit(8);
+  const result = await Recipes.find({
+    category: { $regex: category, $options: "i" },
+  }).limit(8);
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -58,12 +67,13 @@ const recipesById = async (req, res) => {
 const recipesSearch = async (req, res) => {
   const { pages = 1, limit = 12 } = req.query;
 
-  const { word } = req.params;
-  console.log(pages, limit, word);
+  const { word = "" } = req.params;
+
   const skip = (pages - 1) * limit;
+
   if (categoriesType.includes(word)) {
     const ingredientByName = await Ingredient.find({
-      ttl: { $eq: word },
+      ttl: { $regex: word, $options: "i" },
     });
     if (!ingredientByName) {
       throw HttpError(404, "Not found");
@@ -79,7 +89,9 @@ const recipesSearch = async (req, res) => {
     }
     res.json(recipesByIngredient);
   } else {
-    const result = await Recipes.find({ title: { $regex: word } })
+    const result = await Recipes.find({
+      title: { $regex: word, $options: "i" },
+    })
       .skip(skip)
       .limit(limit);
     res.json(result);

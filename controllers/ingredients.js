@@ -17,7 +17,7 @@ const recipesByIngredient = async (req, res) => {
   const { ingredient } = req.params;
 
   const ingredientByName = await Ingredient.find({
-    ttl: { $eq: ingredient },
+    ttl: { $regex: ingredient, $options: "i" },
   });
   if (!ingredientByName) {
     throw HttpError(404, "Not found");
