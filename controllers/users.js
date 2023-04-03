@@ -11,14 +11,18 @@ const register = async (req, res) => {
     throw HttpError(409, `Email ${email} in use`);
   }
   const hashPassword = bcryptjs.hashSync(password, bcryptjs.genSaltSync(10));
+  const avatar =
+    "https://res.cloudinary.com/do316uvkf/image/upload/v1680493993/avatars/ccsh3dpzpsloytws5qa3.jpg";
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
+    avatar,
   });
   res.status(201).json({
     user: {
       name: newUser.name,
       email: newUser.email,
+      avatar: newUser.avatar,
     },
   });
 };
@@ -54,26 +58,30 @@ const logout = async (req, res) => {
 };
 
 const current = async (req, res) => {
-  const { name } = req.user;
-  res.status(200).json({ name });
+  const { name, avatar } = req.user;
+  res.status(200).json({ name, avatar });
 };
 
-// const updateUserById = async (req, res) => {
-//   const { _id } = req.user;
-//   const { name } = req.body;
-//   const data = await User.findByIdAndUpdate(_id, {name}, {
-//     new: true,
-//   });
-//   if (!data) {
-//     throw HttpError(404, "Not found");
-//   }
-//   res.status(200).json(data);
-// };
+const updateUser = async (req, res) => {
+  const { _id } = req.user;
+  const { avatar } = req.body;
+  const data = await User.findByIdAndUpdate(
+    _id,
+    { avatar: req.file.path },
+    {
+      new: true,
+    }
+  );
+  if (!data) {
+    throw HttpError(404, "Not found");
+  }
+  res.status(200).json(data);
+};
 
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   logout: ctrlWrapper(logout),
   current: ctrlWrapper(current),
-  // updateUserById: ctrlWrapper(updateUserById),
+  updateUser: ctrlWrapper(updateUser),
 };

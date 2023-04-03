@@ -16,6 +16,9 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Set password for user"],
     },
+    avatar: {
+      type: String,
+    },
     token: String,
   },
   { versionKey: false, timestamps: true }
@@ -52,13 +55,7 @@ const userJoiLoginSchema = Joi.object({
 
 const updateUserJoiSchema = Joi.object({
   name: Joi.string(),
-  email: Joi.string().email({
-    minDomainSegments: 2,
-    tlds: {
-      allow: ["com", "net"],
-    },
-  }),
-  password: Joi.string().min(6).alphanum(),
+  avatar: Joi.string(),
 });
 
 module.exports = {

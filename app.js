@@ -16,12 +16,10 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-
 app.use("/recipes", recipesRouter);
 app.use("/ingredients", ingredientsRouter);
 
 app.use("/auth", usersRouter);
-
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
