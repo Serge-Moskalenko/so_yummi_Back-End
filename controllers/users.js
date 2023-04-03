@@ -11,12 +11,12 @@ const register = async (req, res) => {
     throw HttpError(409, `Email ${email} in use`);
   }
   const hashPassword = bcryptjs.hashSync(password, bcryptjs.genSaltSync(10));
-  const avatar =
+  const defaultAvatar =
     "https://res.cloudinary.com/do316uvkf/image/upload/v1680493993/avatars/ccsh3dpzpsloytws5qa3.jpg";
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
-    avatar,
+    avatar: defaultAvatar,
   });
   res.status(201).json({
     user: {
@@ -62,15 +62,28 @@ const current = async (req, res) => {
   res.status(200).json({ name, avatar });
 };
 
-const updateUser = async (req, res) => {
+const updateName = async (req, res) => {
   const { _id } = req.user;
-  const { avatar } = req.body;
+  const { name } = req.body;
+  if (Object.keys(req.body).length === 0) {
+    throw HttpError(404, "Missing fields");
+  }
+  const data = await User.findByIdAndUpdate(_id, { name }, { new: true });
+  if (!data) {
+    throw HttpError(404, "Not found");
+  }
+  res.status(200).json(data);
+};
+
+const updateAvatar = async (req, res) => {
+  const { _id, avatar } = req.user;
+  if (!req.file) {
+    throw HttpError(404, "Missing the file");
+  }
   const data = await User.findByIdAndUpdate(
     _id,
     { avatar: req.file.path },
-    {
-      new: true,
-    }
+    { new: true }
   );
   if (!data) {
     throw HttpError(404, "Not found");
@@ -83,5 +96,6 @@ module.exports = {
   login: ctrlWrapper(login),
   logout: ctrlWrapper(logout),
   current: ctrlWrapper(current),
-  updateUser: ctrlWrapper(updateUser),
+  updateName: ctrlWrapper(updateName),
+  updateAvatar: ctrlWrapper(updateAvatar),
 };

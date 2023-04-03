@@ -21,10 +21,17 @@ router.get("/login", validateBody(userJoiLoginSchema), ctrl.login);
 router.get("/current", authMiddleware, ctrl.current);
 router.post("/logout", authMiddleware, ctrl.logout);
 router.patch(
-  "/updateUser",
+  "/updateAvatar",
   authMiddleware,
+  validateBody(updateUserJoiSchema),
   upload.single("avatar"),
-  ctrl.updateUser
+  ctrl.updateAvatar
+);
+router.patch(
+  "/updateName",
+  authMiddleware,
+  validateBody(updateUserJoiSchema),
+  ctrl.updateName
 );
 
 module.exports = router;
