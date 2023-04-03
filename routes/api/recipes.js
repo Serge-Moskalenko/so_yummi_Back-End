@@ -9,7 +9,7 @@ const {
 const router = express.Router();
 
 router.get("/category-list", recipesCategory);
-router.get("/main-page", recipesList);
+router.get("/main-page/:categoryByMain", recipesList);
 router.get("/byCategory/:category", recipesByCategory);
 router.get("/byId/:recipesId", recipesById);
 router.get("/search/:word", recipesSearch);
