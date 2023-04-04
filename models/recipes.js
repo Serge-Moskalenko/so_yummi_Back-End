@@ -74,5 +74,17 @@ const schema = mongoose.Schema(
 schema.post("save", handleMongooseError);
 
 const Recipes = mongoose.model("recipe", schema);
-const addRecipeJoiSchema = Joi.object({});
+const addRecipeJoiSchema = Joi.object({
+  title: Joi.string().required(),
+  category: Joi.string().required(),
+  area: Joi.string().required(),
+  instructions: Joi.string().required(),
+  description: Joi.string().required(),
+  thumb: Joi.string(),
+  preview: Joi.string(),
+  time: Joi.string().required(),
+  youtube: Joi.string(),
+  tags: Joi.array(),
+  ingredients: Joi.array().required(),
+});
 module.exports = { Recipes, addRecipeJoiSchema };

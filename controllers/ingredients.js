@@ -11,6 +11,28 @@ const ingredientsList = async (req, res) => {
   }
   res.json(ingredientsList);
 };
+
+const ingredientById = async (req, res) => {
+  const { ingredientId } = req.params;
+
+  const ingredient = await Ingredient.find({ _id: { $eq: ingredientId } });
+  if (ingredient.length == 0) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(ingredient);
+};
+
+const ingredientByName = async (req, res) => {
+  const { ingredientName } = req.params;
+
+  const ingredient = await Ingredient.find({
+    ttl: { $regex: ingredientName, $options: "i" },
+  });
+  if (ingredient.length == 0) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(ingredient);
+};
 ///////
 ///////
 const recipesByIngredient = async (req, res) => {
@@ -35,4 +57,6 @@ const recipesByIngredient = async (req, res) => {
 module.exports = {
   ingredientsList: ctrlWrapper(ingredientsList),
   recipesByIngredient: ctrlWrapper(recipesByIngredient),
+  ingredientById: ctrlWrapper(ingredientById),
+  ingredientByName: ctrlWrapper(ingredientByName),
 };
