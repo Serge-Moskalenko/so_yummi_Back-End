@@ -1,10 +1,11 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
-const path=require("path")
+const path = require("path");
 require("dotenv").config();
 
 const usersRouter = require("./routes/api/users");
+const favoriteRouter = require("./routes/api/favorite");
 
 const app = express();
 const recipesRouter = require("./routes/api/recipes");
@@ -20,9 +21,11 @@ app.use(express.static("public"));
 app.use("/recipes", recipesRouter);
 app.use("/ingredients", ingredientsRouter);
 app.use("/auth", usersRouter);
+app.use("/favorite", favoriteRouter);
 
-
-app.use("/html", (req, res) => {res.sendFile(path.join(__dirname,"./index.html"))})
+app.use("/html", (req, res) => {
+  res.sendFile(path.join(__dirname, "./index.html"));
+});
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });

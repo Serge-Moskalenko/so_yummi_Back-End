@@ -36,7 +36,7 @@ const recipesList = async (req, res) => {
     .limit(4)
     .sort({ favorites: -1 });
 
-  if (!recipes) {
+  if (recipes.length == 0) {
     throw HttpError(404, "Not found");
   }
   res.json(recipes);
@@ -49,7 +49,7 @@ const recipesByCategory = async (req, res) => {
   const result = await Recipes.find({
     category: { $regex: category, $options: "i" },
   }).limit(8);
-  if (!result) {
+  if (result.length == 0) {
     throw HttpError(404, "Not found");
   }
   res.json(result);
@@ -59,23 +59,35 @@ const recipesByCategory = async (req, res) => {
 const recipesById = async (req, res) => {
   const { recipesId } = req.params;
   const recipe = await Recipes.find({ _id: { $eq: recipesId } });
-  if (!recipe) {
+  if (recipe.length == 0) {
     throw HttpError(404, "Not found");
   }
   res.json(recipe);
 };
 const recipesSearch = async (req, res) => {
-  const { pages = 1, limit = 12 } = req.query;
+  const { pages = 1, limit = 12, type = "title" } = req.query;
 
   const { word = "" } = req.params;
 
   const skip = (pages - 1) * limit;
 
-  if (categoriesType.includes(word)) {
+  if (type.toLowerCase() === "title") {
+    const result = await Recipes.find({
+      title: { $regex: word, $options: "i" },
+    })
+      .skip(skip)
+      .limit(limit);
+    if (result.length == 0) {
+      throw HttpError(404, "Not found");
+    }
+    return res.json(result);
+  }
+  if (type.toLowerCase() === "ingredients") {
     const ingredientByName = await Ingredient.find({
       ttl: { $regex: word, $options: "i" },
     });
-    if (!ingredientByName) {
+
+    if (ingredientByName.length <= 1) {
       throw HttpError(404, "Not found");
     }
 
@@ -84,17 +96,10 @@ const recipesSearch = async (req, res) => {
     })
       .skip(skip)
       .limit(limit);
-    if (!recipesByIngredient) {
+    if (recipesByIngredient.length <= 1) {
       throw HttpError(404, "Not found");
     }
     res.json(recipesByIngredient);
-  } else {
-    const result = await Recipes.find({
-      title: { $regex: word, $options: "i" },
-    })
-      .skip(skip)
-      .limit(limit);
-    res.json(result);
   }
 };
 const addRecipes = async (req, res) => {};
