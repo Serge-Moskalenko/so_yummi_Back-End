@@ -102,10 +102,20 @@ const recipesSearch = async (req, res) => {
     res.json(recipesByIngredient);
   }
 };
+const popularRecipes = async (req, res) => {
+  const recipesByPopular = await Recipes.find()
+    .sort({ favorites: -1 })
+    .limit(10);
+  if (recipesByPopular.length === 0) {
+    throw HttpError(404);
+  }
+  res.json(recipesByPopular);
+};
 module.exports = {
   recipesCategory: ctrlWrapper(recipesCategory),
   recipesList: ctrlWrapper(recipesList),
   recipesByCategory: ctrlWrapper(recipesByCategory),
   recipesById: ctrlWrapper(recipesById),
   recipesSearch: ctrlWrapper(recipesSearch),
+  popularRecipes: ctrlWrapper(popularRecipes),
 };
