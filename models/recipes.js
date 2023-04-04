@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Joi = require("joi");
 const { handleMongooseError } = require("../helpers/index");
 const schema = mongoose.Schema(
   {
@@ -37,13 +38,16 @@ const schema = mongoose.Schema(
     },
     popularity: {
       type: Number,
+      default: 0,
     },
 
     favorites: {
       type: Array,
+      default: [],
     },
     likes: {
       type: Array,
+      default: [],
     },
     youtube: {
       type: String,
@@ -52,10 +56,16 @@ const schema = mongoose.Schema(
 
     tags: {
       type: Array,
+      default: [],
     },
 
     ingredients: {
       type: Array,
+      default: [],
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
     },
   },
   { versionKey: false, timestamps: true }
@@ -64,4 +74,17 @@ const schema = mongoose.Schema(
 schema.post("save", handleMongooseError);
 
 const Recipes = mongoose.model("recipe", schema);
-module.exports = { Recipes };
+const addRecipeJoiSchema = Joi.object({
+  title: Joi.string().required(),
+  category: Joi.string().required(),
+  area: Joi.string().required(),
+  instructions: Joi.string().required(),
+  description: Joi.string().required(),
+  thumb: Joi.string(),
+  preview: Joi.string(),
+  time: Joi.string().required(),
+  youtube: Joi.string(),
+  tags: Joi.array(),
+  ingredients: Joi.array().required(),
+});
+module.exports = { Recipes, addRecipeJoiSchema };
