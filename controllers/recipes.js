@@ -97,10 +97,16 @@ const recipesSearch = async (req, res) => {
     res.json(result);
   }
 };
+const addRecipes = async (req, res) => {};
+const removeRecipes = async (req, res) => {};
+const getOwnerRecipes = async (req, res) => {};
 module.exports = {
   recipesCategory: ctrlWrapper(recipesCategory),
   recipesList: ctrlWrapper(recipesList),
   recipesByCategory: ctrlWrapper(recipesByCategory),
   recipesById: ctrlWrapper(recipesById),
   recipesSearch: ctrlWrapper(recipesSearch),
+  addRecipes: ctrlWrapper(addRecipes),
+  removeRecipes: ctrlWrapper(removeRecipes),
+  getOwnerRecipes: ctrlWrapper(getOwnerRecipes),
 };
