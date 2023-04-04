@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, SchemaTypes } = require("mongoose");
 const Joi = require("joi");
 
 const userSchema = new Schema(
@@ -19,6 +19,8 @@ const userSchema = new Schema(
     avatar: {
       type: String,
     },
+    favorite: [{ type: SchemaTypes.ObjectId, ref: "recipe" }],
+
     token: String,
   },
   { versionKey: false, timestamps: true }
