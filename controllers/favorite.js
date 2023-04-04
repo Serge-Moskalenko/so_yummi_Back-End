@@ -4,11 +4,12 @@ const { Recipes } = require("../models/recipes");
 
 const add = async (req, res) => {
   const { _id } = req.user;
-  const { recipeId } = req.body;
+  // const { recipesId } = req.params;
+  const { recipesId } = req.body;
   const data = await User.findByIdAndUpdate(
     _id,
     {
-      $push: { favorite: recipeId },
+      $push: { favorite: recipesId },
     },
     { new: true }
   );
@@ -20,11 +21,12 @@ const add = async (req, res) => {
 
 const remove = async (req, res) => {
   const { _id } = req.user;
-  const { recipeId } = req.body;
+  // const { recipesId } = req.params;
+  const { recipesId } = req.body;
   const data = await User.findByIdAndUpdate(
     _id,
     {
-      $pull: { favorite: recipeId },
+      $pull: { favorite: recipesId },
     },
     { new: true }
   );
