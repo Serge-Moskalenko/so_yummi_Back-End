@@ -20,7 +20,10 @@ const userSchema = new Schema(
       type: String,
     },
     favorite: [{ type: SchemaTypes.ObjectId, ref: "recipe" }],
-
+    subscribe: {
+      type: Boolean,
+      default: false,
+    },
     token: String,
   },
   { versionKey: false, timestamps: true }
@@ -60,9 +63,21 @@ const updateUserJoiSchema = Joi.object({
   avatar: Joi.string(),
 });
 
+const userJoiSubscribeSchema = Joi.object({
+  email: Joi.string()
+    .email({
+      minDomainSegments: 2,
+      tlds: {
+        allow: ["com", "net"],
+      },
+    })
+    .required(),
+});
+
 module.exports = {
   User,
   userJoiRegisterSchema,
   userJoiLoginSchema,
   updateUserJoiSchema,
+  userJoiSubscribeSchema,
 };
