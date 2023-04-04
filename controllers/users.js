@@ -58,8 +58,8 @@ const logout = async (req, res) => {
 };
 
 const current = async (req, res) => {
-  const { name, avatar } = req.user;
-  res.status(200).json({ name, avatar });
+  const { name, avatar, favorite } = req.user;
+  res.status(200).json({ name, avatar, favorite });
 };
 
 const updateName = async (req, res) => {
