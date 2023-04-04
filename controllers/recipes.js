@@ -29,18 +29,45 @@ const recipesCategory = async (req, res) => {
 ///////
 
 const recipesList = async (req, res) => {
-  const { categoryByMain } = req.params;
+  // const { categoryByMain } = req.params;
 
-  const recipes = await Recipes.find({
-    category: { $regex: categoryByMain, $options: "i" },
+  // const recipes = await Recipes.find({
+  //   category: { $regex: categoryByMain, $options: "i" },
+  // })
+  //   .limit(4)
+  //   .sort({ favorites: -1 });
+
+  // if (recipes.length == 0) {
+  //   throw HttpError(404, "Not found");
+  // }
+  const Breakfast = await Recipes.find({
+    category: { $regex: "Breakfast", $options: "i" },
   })
     .limit(4)
     .sort({ favorites: -1 });
-
-  if (recipes.length == 0) {
-    throw HttpError(404, "Not found");
-  }
-  res.json(recipes);
+  const Miscellaneous = await Recipes.find({
+    category: { $regex: "Miscellaneous", $options: "i" },
+  })
+    .limit(4)
+    .sort({ favorites: -1 });
+  const Chicken = await Recipes.find({
+    category: { $regex: "Chicken", $options: "i" },
+  })
+    .limit(4)
+    .sort({ favorites: -1 });
+  const Dessert = await Recipes.find({
+    category: { $regex: "Dessert", $options: "i" },
+  })
+    .limit(4)
+    .sort({ favorites: -1 });
+  res.json({
+    data: {
+      Breakfast,
+      Miscellaneous,
+      Chicken,
+      Dessert,
+    },
+  });
 };
 ///////
 ///////
@@ -104,6 +131,16 @@ const recipesSearch = async (req, res) => {
   }
 };
 
+const popularRecipes = async (req, res) => {
+  const recipesByPopular = await Recipes.find()
+    .sort({ favorites: -1 })
+    .limit(10);
+  if (recipesByPopular.length === 0) {
+    throw HttpError(404);
+  }
+  res.json(recipesByPopular);
+};
+
 const addRecipes = async (req, res) => {
   const user = req.user;
   if (!user) {
@@ -145,7 +182,6 @@ const getOwnerRecipes = async (req, res) => {
   res.json({ result });
 };
 
-
 const addFavoriteRecipe = async (req, res) => {
   const { _id } = req.user;
   const { recipesId } = req.params;
@@ -170,10 +206,11 @@ module.exports = {
   recipesById: ctrlWrapper(recipesById),
   recipesSearch: ctrlWrapper(recipesSearch),
 
+  popularRecipes: ctrlWrapper(popularRecipes),
+
   addRecipes: ctrlWrapper(addRecipes),
   removeRecipes: ctrlWrapper(removeRecipes),
   getOwnerRecipes: ctrlWrapper(getOwnerRecipes),
 
   addFavoriteRecipe: ctrlWrapper(addFavoriteRecipe),
-
 };
