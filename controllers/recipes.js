@@ -81,14 +81,14 @@ const recipesSearch = async (req, res) => {
     if (result.length == 0) {
       throw HttpError(404, "Not found");
     }
-    return res.json(result);
+    res.json(result);
   }
   if (type.toLowerCase() === "ingredients") {
     const ingredientByName = await Ingredient.find({
       ttl: { $regex: word, $options: "i" },
     });
 
-    if (ingredientByName.length <= 1) {
+    if (ingredientByName.length == 0) {
       throw HttpError(404, "Not found");
     }
 
@@ -97,12 +97,54 @@ const recipesSearch = async (req, res) => {
     })
       .skip(skip)
       .limit(limit);
-    if (recipesByIngredient.length <= 1) {
+    if (recipesByIngredient.length == 0) {
       throw HttpError(404, "Not found");
     }
     res.json(recipesByIngredient);
   }
 };
+
+const addRecipes = async (req, res) => {
+  const user = req.user;
+  if (!user) {
+    throw HttpError(401);
+  }
+
+  const result = await Recipes.create({ ...req.body, owner: user._id });
+
+  res.status(201).json(result);
+};
+
+const removeRecipes = async (req, res) => {
+  const user = req.user;
+  if (!user) {
+    throw HttpError(401);
+  }
+  const { ownRecipesId } = req.params;
+  const recipe = await Recipes.deleteOne({
+    $and: [{ _id: { $eq: ownRecipesId } }, { owner: { $eq: user._id } }],
+  });
+  if (recipe.deletedCount == 0) {
+    throw HttpError(404, "Not found");
+  }
+  res.json({
+    data: {
+      message: "Recipes deleted",
+    },
+  });
+};
+const getOwnerRecipes = async (req, res) => {
+  const user = req.user;
+  if (!user) {
+    throw HttpError(401);
+  }
+  const result = await Recipes.find({ owner: { $eq: user._id } });
+  if (result.length == 0) {
+    throw HttpError(404, "Not found");
+  }
+  res.json({ result });
+};
+
 
 const addFavoriteRecipe = async (req, res) => {
   const { _id } = req.user;
@@ -127,5 +169,11 @@ module.exports = {
   recipesByCategory: ctrlWrapper(recipesByCategory),
   recipesById: ctrlWrapper(recipesById),
   recipesSearch: ctrlWrapper(recipesSearch),
+
+  addRecipes: ctrlWrapper(addRecipes),
+  removeRecipes: ctrlWrapper(removeRecipes),
+  getOwnerRecipes: ctrlWrapper(getOwnerRecipes),
+
   addFavoriteRecipe: ctrlWrapper(addFavoriteRecipe),
+
 };
