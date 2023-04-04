@@ -2,6 +2,7 @@ const { HttpError } = require("../helpers");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
 const { Ingredient } = require("../models/ingredient");
 const { Recipes } = require("../models/recipes");
+const { User } = require("../models/user");
 //
 const categoriesType = [
   "Beef",
@@ -102,10 +103,29 @@ const recipesSearch = async (req, res) => {
     res.json(recipesByIngredient);
   }
 };
+
+const addFavoriteRecipe = async (req, res) => {
+  const { _id } = req.user;
+  const { recipesId } = req.params;
+  const recipe = await Recipes.find({ _id: { $eq: recipesId } });
+  const data = await User.findByIdAndUpdate(
+    _id,
+    {
+      $push: { favorite: recipe },
+    },
+    { new: true }
+  );
+  if (!data) {
+    throw HttpError(404, "Not found");
+  }
+  res.status(200).json({ message: "Recepi added to favorite" });
+};
+
 module.exports = {
   recipesCategory: ctrlWrapper(recipesCategory),
   recipesList: ctrlWrapper(recipesList),
   recipesByCategory: ctrlWrapper(recipesByCategory),
   recipesById: ctrlWrapper(recipesById),
   recipesSearch: ctrlWrapper(recipesSearch),
+  addFavoriteRecipe: ctrlWrapper(addFavoriteRecipe),
 };
