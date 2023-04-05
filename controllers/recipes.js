@@ -23,8 +23,6 @@ const categoriesType = [
 //
 
 const mainPage = async (req, res, next) => {
-  
-
   const result = await Recipes.aggregate([
     { $group: { _id: "$category", items: { $push: "$$ROOT" } } },
     { $project: { meals: { $slice: ["$items", 4] } } },
@@ -38,9 +36,6 @@ const mainPage = async (req, res, next) => {
   });
 };
 
-
-
-
 ///////
 const recipesCategory = async (req, res) => {
   const categories = [...categoriesType].sort();
@@ -49,48 +44,6 @@ const recipesCategory = async (req, res) => {
 ///////
 ///////
 
-const recipesList = async (req, res) => {
-  // const { categoryByMain } = req.params;
-
-  // const recipes = await Recipes.find({
-  //   category: { $regex: categoryByMain, $options: "i" },
-  // })
-  //   .limit(4)
-  //   .sort({ favorites: -1 });
-
-  // if (recipes.length == 0) {
-  //   throw HttpError(404, "Not found");
-  // }
-  const Breakfast = await Recipes.find({
-    category: { $regex: "Breakfast", $options: "i" },
-  })
-    .limit(4)
-    .sort({ favorites: -1 });
-  const Miscellaneous = await Recipes.find({
-    category: { $regex: "Miscellaneous", $options: "i" },
-  })
-    .limit(4)
-    .sort({ favorites: -1 });
-  const Chicken = await Recipes.find({
-    category: { $regex: "Chicken", $options: "i" },
-  })
-    .limit(4)
-    .sort({ favorites: -1 });
-  const Dessert = await Recipes.find({
-    category: { $regex: "Dessert", $options: "i" },
-  })
-    .limit(4)
-    .sort({ favorites: -1 });
-  if (
-    Breakfast.length == 0 ||
-    Miscellaneous.length == 0 ||
-    Chicken.length == 0 ||
-    Dessert.length == 0
-  ) {
-    throw HttpError(404);
-  }
-  res.json([...Breakfast, ...Miscellaneous, ...Chicken, ...Dessert]);
-};
 ///////
 ///////
 const recipesByCategory = async (req, res) => {
@@ -154,12 +107,28 @@ const recipesSearch = async (req, res) => {
 };
 
 const popularRecipes = async (req, res) => {
-  const recipesByPopular = await Recipes.find()
-    .sort({ favorites: -1 })
-    .limit(10);
+  const recipesByPopular = await Recipes.aggregate([
+    {
+      $project: {
+        title: 1,
+        description: 1,
+        preview: 1,
+        numberOfFavorites: {
+          $cond: {
+            if: { $isArray: "$favorites" },
+            then: { $size: "$favorites" },
+            else: "NA",
+          },
+        },
+      },
+    },
+    { $sort: { numberOfFavorites: -1 } },
+    { $limit: 4 },
+  ]);
   if (recipesByPopular.length === 0) {
     throw HttpError(404);
   }
+
   res.json(recipesByPopular);
 };
 
@@ -221,7 +190,7 @@ const addFavoriteRecipe = async (req, res) => {
 
 module.exports = {
   recipesCategory: ctrlWrapper(recipesCategory),
-  recipesList: ctrlWrapper(recipesList),
+
   recipesByCategory: ctrlWrapper(recipesByCategory),
   recipesById: ctrlWrapper(recipesById),
   recipesSearch: ctrlWrapper(recipesSearch),
@@ -234,5 +203,4 @@ module.exports = {
 
   addFavoriteRecipe: ctrlWrapper(addFavoriteRecipe),
   mainPage: ctrlWrapper(mainPage),
-
 };
