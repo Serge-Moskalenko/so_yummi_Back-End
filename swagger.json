@@ -1,7 +1,7 @@
 {
    "openapi":"3.0.1",
    "info":{
-    "version":"1.0.3",
+    "version":"1.0.4",
     "title": "Recipies API",
     "description":"Swagger for recipes"
    },
@@ -9,8 +9,12 @@
    "produces":["application/json"],
    "servers":[{"url":"https://recipes-becend-49lg.onrender.com"}],
    "tags":[{
-    "name":"Auth",
+      "name":"Auth",
     "description":"Authorization endpoints"
+   },
+   {
+    "name":"User",
+    "description":"Authenticated user endpoint"
    }],
    "paths":{
       "auth/register":{
@@ -78,8 +82,56 @@
                      }
                   }
                },
+               "400":{
+                  "description":"Bad request",
+                  "content":{}
+               },
                "401":{
                   "description":"Email or password is wrong",
+                  "content":{}
+               }
+            }
+         }
+      },
+      "auth/logout":{
+         "get":{
+            "tags":["Auth"],
+            "summery":"User logout",
+            "security":[{"Bearer":[]}],
+            "parameters":[],
+            "requestBody":{},
+            "responses":{
+               "204":{
+                  "description":"OK",
+                  "content":{}
+               },
+               "401":{
+                  "description":"Not authenticated",
+                  "content":{}
+               }
+            }
+         }
+      },
+      "auth/current":{
+         "get":{
+            "tags":["User"],
+            "summery":" Current user",
+            "security":[{"Bearer":[]}],
+            "parameters":[],
+            "requestBody":{},
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                       "schema":{
+                        "$ref":"#/components/schemas/LoginResponse"
+                       }
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Not authenticated",
                   "content":{}
                }
             }
@@ -88,7 +140,10 @@
    },
    "components":{
       "schemas":{
-         "RegistrationRequest":{
+         "Auth":{
+             "type":"object",
+             "properties":{
+               "RegistrationRequest":{
             "type":"object",
             "required":["name","email","password"],
             "properties":{
@@ -146,7 +201,7 @@
                }
          }
          },
-      "LoginResponse":{
+         "LoginResponse":{
          "type":"object",
             "properties":{
                "token":{
@@ -171,7 +226,14 @@
                }
       }
          }
-},
+      }
+       
+         },
+         "User":{
+            "type":"object",
+             "properties":{}
+         }
+      },
  "securitySchemes":{
             "Bearer":{
                "type":"http",
