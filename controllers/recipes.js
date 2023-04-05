@@ -60,14 +60,15 @@ const recipesList = async (req, res) => {
   })
     .limit(4)
     .sort({ favorites: -1 });
-  res.json({
-    data: {
-      Breakfast,
-      Miscellaneous,
-      Chicken,
-      Dessert,
-    },
-  });
+  if (
+    Breakfast.length == 0 ||
+    Miscellaneous.length == 0 ||
+    Chicken.length == 0 ||
+    Dessert.length == 0
+  ) {
+    throw HttpError(404);
+  }
+  res.json([...Breakfast, ...Miscellaneous, ...Chicken, ...Dessert]);
 };
 ///////
 ///////
