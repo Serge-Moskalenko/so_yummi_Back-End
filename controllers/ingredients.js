@@ -2,6 +2,7 @@ const { HttpError } = require("../helpers");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
 const { Ingredient } = require("../models/ingredient");
 const { Recipes } = require("../models/recipes");
+const { User } = require("../models/user");
 
 ///////
 const ingredientsList = async (req, res) => {
@@ -54,9 +55,27 @@ const recipesByIngredient = async (req, res) => {
   res.json(recipesByIngredient);
 };
 
+const addIngredientToShoppingList = async (req, res) => {
+  const { _id } = req.user;
+  const { ingredientId } = req.params;
+  const ingredient = await Ingredient.find({ _id: { $eq: ingredientId } });
+  const data = await User.findByIdAndUpdate(
+    _id,
+    {
+      $push: { shoppingList: ingredient },
+    },
+    { new: true }
+  );
+  if (!data) {
+    throw HttpError(404, "Not found");
+  }
+  res.status(200).json({ message: "Ingredient added to cart" });
+};
+
 module.exports = {
   ingredientsList: ctrlWrapper(ingredientsList),
   recipesByIngredient: ctrlWrapper(recipesByIngredient),
   ingredientById: ctrlWrapper(ingredientById),
   ingredientByName: ctrlWrapper(ingredientByName),
+  addIngredientToShoppingList: ctrlWrapper(addIngredientToShoppingList),
 };

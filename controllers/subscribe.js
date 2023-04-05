@@ -1,5 +1,4 @@
 const { HttpError, ctrlWrapper, sendEmail } = require("../helpers");
-const { User } = require("../models/user");
 
 const subscribeUser = async (req, res) => {
   const { email } = req.body;
@@ -9,10 +8,10 @@ const subscribeUser = async (req, res) => {
   const subscribeEmail = {
     to: email,
     subject: "Subscribe to So Yummy",
-    text: "Thank you for subscribing ❤️",
+    templateId: "d-8170963616d44c489b78e58de7c6dbc6",
   };
   await sendEmail(subscribeEmail);
-  res.status(200).json({ message: "Successfully" });
+  res.status(200).json({ message: "Subscribe is successfully" });
 };
 
 module.exports = {

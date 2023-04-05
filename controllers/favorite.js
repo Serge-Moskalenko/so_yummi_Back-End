@@ -2,8 +2,9 @@ const { HttpError, ctrlWrapper } = require("../helpers");
 const { User } = require("../models/user");
 
 const getFavoriteRecipe = async (req, res) => {
-  const { favorite } = req.user;
-  res.status(200).json({ favorite });
+  const { _id } = req.user;
+  const data = await User.findById(_id).populate("favorite");
+  res.status(200).json(data);
 };
 
 const removeFavoriteRecipe = async (req, res) => {

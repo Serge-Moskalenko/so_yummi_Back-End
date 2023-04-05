@@ -7,6 +7,7 @@ require("dotenv").config();
 const usersRouter = require("./routes/api/users");
 const favoriteRouter = require("./routes/api/favorite");
 const subscribeRouter = require("./routes/api/subscribe");
+const shoppingListRouter = require("./routes/api/shopping-list");
 
 const app = express();
 const recipesRouter = require("./routes/api/recipes");
@@ -24,6 +25,7 @@ app.use("/ingredients", ingredientsRouter);
 app.use("/auth", usersRouter);
 app.use("/favorite", favoriteRouter);
 app.use("/subscribe", subscribeRouter);
+app.use("/shopping-list", shoppingListRouter);
 
 app.use("/html", (req, res) => {
   res.sendFile(path.join(__dirname, "./index.html"));

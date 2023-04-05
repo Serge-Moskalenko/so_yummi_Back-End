@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Serge-Moskalenko/recipes_team-work#readme",
   "dependencies": {
+    "@sendgrid/helpers": "^7.7.0",
     "@sendgrid/mail": "^7.7.0",
     "axios": "^1.3.4",
     "bcryptjs": "^2.4.3",
