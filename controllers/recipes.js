@@ -20,6 +20,27 @@ const categoriesType = [
   "Vegan",
   "Vegetarian",
 ];
+//
+
+const mainPage = async (req, res, next) => {
+  
+
+  const result = await Recipes.aggregate([
+    { $group: { _id: "$category", items: { $push: "$$ROOT" } } },
+    { $project: { meals: { $slice: ["$items", 4] } } },
+    { $limit: 13 }, // Optional limit to the number of categories to return
+  ]);
+
+  res.status(201).json({
+    status: "success",
+    code: 201,
+    data: result,
+  });
+};
+
+
+
+
 ///////
 const recipesCategory = async (req, res) => {
   const categories = [...categoriesType].sort();
@@ -212,4 +233,6 @@ module.exports = {
   getOwnerRecipes: ctrlWrapper(getOwnerRecipes),
 
   addFavoriteRecipe: ctrlWrapper(addFavoriteRecipe),
+  mainPage: ctrlWrapper(mainPage),
+
 };
