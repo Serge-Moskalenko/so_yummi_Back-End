@@ -1,7 +1,7 @@
 {
    "openapi":"3.0.1",
    "info":{
-    "version":"1.0.1",
+    "version":"1.0.2",
     "title": "Recipies API",
     "description":"Swagger for recipes"
    },
@@ -18,7 +18,6 @@
             "tags":["Auth"],
             "summery":"User registration",
             "parameters":[],
-            "security":[{"Bearer":[]}],
             "requestBody":{
                "description":"Registration object",
                "required":true,
@@ -35,9 +34,19 @@
                   "description":"Successes",
                   "content":{
                      "application/json":{
-                       "schema":{}
+                       "schema":{
+                        "$ref":"#/components/schemas/RegistrationResponse"
+                       }
                      }
                   }
+               },
+               "400":{
+                  "description":"Bad request",
+                  "content":{}
+               },
+               "409":{
+               "description":"Email in use",
+               "content":{}
                }
             }
          }
@@ -66,7 +75,35 @@
                   "example":"123456"
                }
             }
+         },
+         "RegistrationResponse":{
+            "type":"object",
+            "properties":{
+               "name":{
+                  "type":"string",
+                  "description":"User's name",
+                  "example":"Nick"
+               },
+               "email":{
+                  "type":"string",
+                  "description":"User's email",
+                  "format":"email"
+
+               },
+               "avatar":{
+                  "type":"string",
+                  "description":"User's defaultAvatar"
+               }
          }
-      }
+         }
+      },
+      "securitySchemes":{
+            "Bearer":{
+               "type":"http",
+               "scheme":"bearer",
+               "bearerFormat":"JWT"
+            }
+         }
    }
 }
+
