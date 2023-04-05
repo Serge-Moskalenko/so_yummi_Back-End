@@ -26,7 +26,7 @@ const mainPage = async (req, res, next) => {
   const result = await Recipes.aggregate([
     { $group: { _id: "$category", items: { $push: "$$ROOT" } } },
     { $project: { meals: { $slice: ["$items", 4] } } },
-    { $limit: 13 }, // Optional limit to the number of categories to return
+    { $limit: 13 },
   ]);
 
   res.status(201).json({
@@ -52,7 +52,7 @@ const recipesByCategory = async (req, res) => {
   const result = await Recipes.find({
     category: { $regex: category, $options: "i" },
   }).limit(8);
-  if (result.length == 0) {
+  if (!result) {
     throw HttpError(404, "Not found");
   }
   res.json(result);
@@ -62,11 +62,12 @@ const recipesByCategory = async (req, res) => {
 const recipesById = async (req, res) => {
   const { recipesId } = req.params;
   const recipe = await Recipes.find({ _id: { $eq: recipesId } });
-  if (recipe.length == 0) {
+  if (!recipe) {
     throw HttpError(404, "Not found");
   }
   res.json(recipe);
 };
+
 const recipesSearch = async (req, res) => {
   const { pages = 1, limit = 12, type = "title" } = req.query;
 
@@ -80,7 +81,7 @@ const recipesSearch = async (req, res) => {
     })
       .skip(skip)
       .limit(limit);
-    if (result.length == 0) {
+    if (!result) {
       throw HttpError(404, "Not found");
     }
     res.json(result);
@@ -90,7 +91,7 @@ const recipesSearch = async (req, res) => {
       ttl: { $regex: word, $options: "i" },
     });
 
-    if (ingredientByName.length == 0) {
+    if (!ingredientByName) {
       throw HttpError(404, "Not found");
     }
 
@@ -99,7 +100,7 @@ const recipesSearch = async (req, res) => {
     })
       .skip(skip)
       .limit(limit);
-    if (recipesByIngredient.length == 0) {
+    if (!recipesByIngredient) {
       throw HttpError(404, "Not found");
     }
     res.json(recipesByIngredient);
@@ -125,7 +126,7 @@ const popularRecipes = async (req, res) => {
     { $sort: { numberOfFavorites: -1 } },
     { $limit: 4 },
   ]);
-  if (recipesByPopular.length === 0) {
+  if (!recipesByPopular) {
     throw HttpError(404);
   }
 
@@ -152,7 +153,7 @@ const removeRecipes = async (req, res) => {
   const recipe = await Recipes.deleteOne({
     $and: [{ _id: { $eq: ownRecipesId } }, { owner: { $eq: user._id } }],
   });
-  if (recipe.deletedCount == 0) {
+  if (!recipe) {
     throw HttpError(404, "Not found");
   }
   res.json({
