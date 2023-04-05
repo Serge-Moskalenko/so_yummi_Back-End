@@ -1,7 +1,7 @@
 {
    "openapi":"3.0.1",
    "info":{
-    "version":"1.0.2",
+    "version":"1.0.3",
     "title": "Recipies API",
     "description":"Swagger for recipes"
    },
@@ -50,6 +50,40 @@
                }
             }
          }
+      },
+      "auth/login":{
+         "get":{
+            "tags":["Auth"],
+            "summery":"User login",
+            "parameters":[],
+            "requestBody":{
+               "description":"Login object",
+               "required":true,
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "$ref":"#/components/schemas/LoginRequest"
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "200":{
+                  "description":"Successes",
+                  "content":{
+                     "application/json":{
+                       "schema":{
+                        "$ref":"#/components/schemas/LoginResponse"
+                       }
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Email or password is wrong",
+                  "content":{}
+               }
+            }
+         }
       }
    },
    "components":{
@@ -95,15 +129,55 @@
                   "description":"User's defaultAvatar"
                }
          }
+         },
+         "LoginRequest":{
+            "type":"object",
+            "required":["email","password"],
+            "properties":{
+               "email":{
+                  "type":"string",
+                  "description":"User's email",
+                  "format":"email"
+               },
+               "password":{
+                  "type":"string",
+                  "description":"User's password",
+                  "example":"123456"
+               }
          }
-      },
-      "securitySchemes":{
+         },
+      "LoginResponse":{
+         "type":"object",
+            "properties":{
+               "token":{
+                  "type":"string",
+                  "description":"User's token",
+                  "example":"31421425252351341412"
+               },
+               "user":{
+                  "type":"object",
+                  "properties":{
+                     "name":{
+                  "type":"string",
+                  "description":"User's name",
+                  "example":"Nick"
+               },
+                  "email":{
+                  "type":"string",
+                  "description":"User's email",
+                  "format":"email"
+               }
+                  }
+               }
+      }
+         }
+},
+ "securitySchemes":{
             "Bearer":{
                "type":"http",
                "scheme":"bearer",
                "bearerFormat":"JWT"
             }
          }
-   }
 }
-
+}
