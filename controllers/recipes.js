@@ -61,6 +61,7 @@ const recipesByCategory = async (req, res) => {
 ///////
 const recipesById = async (req, res) => {
   const { recipesId } = req.params;
+
   const recipe = await Recipes.find({ _id: { $eq: recipesId } });
   if (!recipe) {
     throw HttpError(404, "Not found");
@@ -140,8 +141,12 @@ const addRecipes = async (req, res) => {
   }
 
   const result = await Recipes.create({ ...req.body, owner: user._id });
-
-  res.status(201).json(result);
+  if (!result) {
+    throw HttpError(404);
+  }
+  res
+    .status(201)
+    .json({ data: { result, message: "Recipe added successfully" } });
 };
 
 const removeRecipes = async (req, res) => {
@@ -169,7 +174,7 @@ const getOwnerRecipes = async (req, res) => {
   }
   const result = await Recipes.find({ owner: { $eq: user._id } });
 
-  res.json({ result });
+  res.json(result);
 };
 
 const addFavoriteRecipe = async (req, res) => {
