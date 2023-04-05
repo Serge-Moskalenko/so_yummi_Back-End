@@ -178,7 +178,12 @@ const addFavoriteRecipe = async (req, res) => {
   const data = await User.findByIdAndUpdate(
     _id,
     {
-      $push: { favorite: recipe },
+      $push: {
+        favorite: {
+          $each: recipe,
+          $position: 0,
+        },
+      },
     },
     { new: true }
   );
