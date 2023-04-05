@@ -7,6 +7,7 @@ const {
   recipesSearch,
 
   mainPage,
+  popularRecipes,
 
   addRecipes,
   removeRecipes,
