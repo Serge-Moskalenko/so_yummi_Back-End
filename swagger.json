@@ -1,0 +1,15 @@
+{
+   "openapi":"3.0.1",
+   "info":{
+    "version":"1.0.0",
+    "title": "Recipies API",
+    "description":"Swagger for recipes"
+   },
+   "cunsumes":["application/json","multipart/form-data"],
+   "produces":["application/json"],
+   "servers":[{"url":"https://recipes-becend-49lg.onrender.com"}],
+   "tags":[{
+    "name":"Auth",
+    "description":"Authorization endpoints"
+   }] 
+}
