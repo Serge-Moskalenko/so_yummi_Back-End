@@ -7,7 +7,7 @@ const { User } = require("../models/user");
 ///////
 const ingredientsList = async (req, res) => {
   const ingredientsList = await Ingredient.find({});
-  if (ingredientsList.length == 0) {
+  if (!ingredientsList) {
     throw HttpError(404, "Not found");
   }
   res.json(ingredientsList);
@@ -17,7 +17,7 @@ const ingredientById = async (req, res) => {
   const { ingredientId } = req.params;
 
   const ingredient = await Ingredient.find({ _id: { $eq: ingredientId } });
-  if (ingredient.length == 0) {
+  if (!ingredient) {
     throw HttpError(404, "Not found");
   }
   res.json(ingredient);
@@ -29,7 +29,7 @@ const ingredientByName = async (req, res) => {
   const ingredient = await Ingredient.find({
     ttl: { $regex: ingredientName, $options: "i" },
   });
-  if (ingredient.length == 0) {
+  if (!ingredient) {
     throw HttpError(404, "Not found");
   }
   res.json(ingredient);
@@ -42,14 +42,14 @@ const recipesByIngredient = async (req, res) => {
   const ingredientByName = await Ingredient.find({
     ttl: { $regex: ingredient, $options: "i" },
   });
-  if (ingredientByName.length == 0) {
+  if (!ingredientByName) {
     throw HttpError(404, "Not found");
   }
 
   const recipesByIngredient = await Recipes.find({
     "ingredients.id": ingredientByName[0]._id,
   });
-  if (recipesByIngredient.length == 0) {
+  if (!recipesByIngredient) {
     throw HttpError(404, "Not found");
   }
   res.json(recipesByIngredient);
