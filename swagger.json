@@ -1,7 +1,7 @@
 {
    "openapi":"3.0.1",
    "info":{
-    "version":"1.0.0",
+    "version":"1.0.1",
     "title": "Recipies API",
     "description":"Swagger for recipes"
    },
@@ -11,5 +11,62 @@
    "tags":[{
     "name":"Auth",
     "description":"Authorization endpoints"
-   }] 
+   }],
+   "paths":{
+      "auth/register":{
+         "post":{
+            "tags":["Auth"],
+            "summery":"User registration",
+            "parameters":[],
+            "security":[{"Bearer":[]}],
+            "requestBody":{
+               "description":"Registration object",
+               "required":true,
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "$ref":"#/components/schemas/RegistrationRequest"
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "201":{
+                  "description":"Successes",
+                  "content":{
+                     "application/json":{
+                       "schema":{}
+                     }
+                  }
+               }
+            }
+         }
+      }
+   },
+   "components":{
+      "schemas":{
+         "RegistrationRequest":{
+            "type":"object",
+            "required":["name","email","password"],
+            "properties":{
+               "name":{
+                  "type":"string",
+                  "description":"User's name",
+                  "example":"Nick"
+               },
+               "email":{
+                  "type":"string",
+                  "description":"User's email",
+                  "format":"email"
+
+               },
+               "password":{
+                  "type":"string",
+                  "description":"User's password",
+                  "example":"123456"
+               }
+            }
+         }
+      }
+   }
 }
