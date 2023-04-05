@@ -23,6 +23,8 @@ const register = async (req, res) => {
       name: newUser.name,
       email: newUser.email,
       avatar: newUser.avatar,
+      favorite: newUser.favorite,
+      shoppingList: newUser.shoppingList,
     },
   });
 };

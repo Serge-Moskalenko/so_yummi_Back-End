@@ -20,10 +20,7 @@ const userSchema = new Schema(
       type: String,
     },
     favorite: [{ type: SchemaTypes.ObjectId, ref: "recipe" }],
-    subscribe: {
-      type: Boolean,
-      default: false,
-    },
+    shoppingList: [{ type: SchemaTypes.ObjectId, ref: "ingredient" }],
     token: String,
   },
   { versionKey: false, timestamps: true }
