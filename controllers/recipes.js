@@ -177,9 +177,7 @@ const getOwnerRecipes = async (req, res) => {
     throw HttpError(401);
   }
   const result = await Recipes.find({ owner: { $eq: user._id } });
-  if (result.length == 0) {
-    throw HttpError(404, "Not found");
-  }
+
   res.json({ result });
 };
 
