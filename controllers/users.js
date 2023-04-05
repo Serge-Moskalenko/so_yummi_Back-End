@@ -64,33 +64,24 @@ const current = async (req, res) => {
   res.status(200).json({ name, avatar, favorite });
 };
 
-const updateName = async (req, res) => {
+const updateUser = async (req, res) => {
   const { _id } = req.user;
-  const { name } = req.body;
-  if (Object.keys(req.body).length === 0) {
-    throw HttpError(404, "Missing fields");
-  }
-  const data = await User.findByIdAndUpdate(_id, { name }, { new: true });
-  if (!data) {
-    throw HttpError(404, "Not found");
-  }
-  res.status(200).json(data);
-};
-
-const updateAvatar = async (req, res) => {
-  const { _id, avatar } = req.user;
-  if (!req.file) {
-    throw HttpError(404, "Missing the file");
-  }
   const data = await User.findByIdAndUpdate(
     _id,
-    { avatar: req.file.path },
+    { ...req.body, ...req.file },
     { new: true }
   );
+  try {
+    if (req.file) {
+      await User.findByIdAndUpdate(_id, { avatar: req.file.path });
+    }
+  } catch (error) {
+    throw error;
+  }
   if (!data) {
     throw HttpError(404, "Not found");
   }
-  res.status(200).json(data);
+  res.status(200).json({ message: "User profile updated successfully" });
 };
 
 module.exports = {
@@ -98,6 +89,5 @@ module.exports = {
   login: ctrlWrapper(login),
   logout: ctrlWrapper(logout),
   current: ctrlWrapper(current),
-  updateName: ctrlWrapper(updateName),
-  updateAvatar: ctrlWrapper(updateAvatar),
+  updateUser: ctrlWrapper(updateUser),
 };
