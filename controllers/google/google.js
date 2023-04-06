@@ -1,11 +1,9 @@
 const queryString = require("query-string");
 
-const redirect = "http://localhost:3000/auth/google-redirect";
-
 exports.google = async (req, res) => {
     const string = queryString.stringify({
         client_id: process.env.GOOGLE_CLIENT_ID,
-        redirect_uri: redirect,
+        redirect_uri: process.env.REDIRECT,
         scope: [
             "https://www.googleapis.com/auth/userinfo.email",
             "https://www.googleapis.com/auth/userinfo.profile",

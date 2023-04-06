@@ -3,8 +3,6 @@ const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const { User } = require("../../models/user");
 
-const redirect = "http://localhost:3000/auth/google-redirect";
-
 exports.googleRedirect = async (req, res) => {
     const fullUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
     const url = new URL(fullUrl);
@@ -17,7 +15,7 @@ exports.googleRedirect = async (req, res) => {
         data: {
             client_id: process.env.GOOGLE_CLIENT_ID,
             client_secret: process.env.GOOGLE_CLIENT_SECRET,
-            redirect_uri: redirect,
+            redirect_uri: process.env.REDIRECT,
             grant_type: 'authorization_code',
             code,
         }
@@ -34,7 +32,7 @@ exports.googleRedirect = async (req, res) => {
     
     const googleRegister = async () => {
         await axios({
-            url: "http://localhost:3000/auth/register",
+            url: "https://recipes-becend-49lg.onrender.com/auth/register",
             method: 'post',
             data: {
                 name: userData.data.name,
@@ -46,7 +44,7 @@ exports.googleRedirect = async (req, res) => {
 
       const googleLogin = async() => {
         await axios({
-            url: "http://localhost:3000/auth/login",
+            url: "https://recipes-becend-49lg.onrender.com/auth/login",
             method: 'get',
             data: {
                 email: userData.data.email,
@@ -62,5 +60,5 @@ exports.googleRedirect = async (req, res) => {
         googleLogin()
     }
 
-    return res.redirect(`http://localhost:3000?email=${userData.data}`)
+    return res.redirect(`https://4106677.github.io/so-yummy-front-end/main`)
 };
