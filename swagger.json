@@ -28,7 +28,7 @@
                "content":{
                   "application/json":{
                      "schema":{
-                        "$ref":"#/components/schemas/auth.RegistrationRequest"
+                        "$ref":"#/components/schemas/auth/RegistrationRequest"
                      }
                   }
                }
@@ -39,7 +39,7 @@
                   "content":{
                      "application/json":{
                        "schema":{
-                        "$ref":"#/components/schemas/auth.RegistrationResponse"
+                        "$ref":"#/components/schemas/auth/RegistrationResponse"
                        }
                      }
                   }
@@ -66,7 +66,7 @@
                "content":{
                   "application/json":{
                      "schema":{
-                        "$ref":"#/components/schemas/auth.LoginRequest"
+                        "$ref":"#/components/schemas/auth/LoginRequest"
                      }
                   }
                }
@@ -77,7 +77,7 @@
                   "content":{
                      "application/json":{
                        "schema":{
-                        "$ref":"#/components/schemas/auth.LoginResponse"
+                        "$ref":"#/components/schemas/auth/LoginResponse"
                        }
                      }
                   }
@@ -125,7 +125,7 @@
                   "content":{
                      "application/json":{
                        "schema":{
-                        "$ref":"#/components/schemas/auth.LoginResponse"
+                        "$ref":"#/components/schemas/auth/LoginResponse"
                        }
                      }
                   }
