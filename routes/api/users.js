@@ -27,5 +27,8 @@ router.patch(
   upload.single("avatar"),
   ctrl.updateUser
 );
+router.get("/countDayInfo", authMiddleware, ctrl.authDayInSoYummy);
+router.get("/favoritesRecipes", authMiddleware, ctrl.authFavoritesRecipes);
+router.get("/authOwnRecipes", authMiddleware, ctrl.authOwnRecipes);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const { HttpError, ctrlWrapper } = require("../helpers");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models/user");
+const { Recipes } = require("../models/recipes");
 const { SECRET_KEY } = process.env;
 
 const register = async (req, res) => {
@@ -84,10 +85,64 @@ const updateUser = async (req, res) => {
   res.status(200).json({ message: "User profile updated successfully" });
 };
 
+const authDayInSoYummy = async (req, res) => {
+  const { createdAt } = req.user;
+  if (!createdAt) {
+    throw HttpError(401);
+  }
+  const newDate = new Date();
+  const result = await User.aggregate([
+    {
+      $group: {
+        _id: null,
+        averageTime: {
+          $avg: {
+            $dateDiff: {
+              startDate: createdAt,
+              endDate: newDate,
+              unit: "day",
+            },
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        numDays: {
+          $trunc: ["$averageTime", 1],
+        },
+      },
+    },
+  ]);
+  if (!result) {
+    throw HttpError(404);
+  }
+  res.json(result);
+};
+const authFavoritesRecipes = async (req, res) => {
+  const { favorite } = req.user;
+
+  res.json(favorite.length);
+};
+const authOwnRecipes = async (req, res) => {
+  const user = req.user;
+  if (!user) {
+    throw HttpError(401);
+  }
+  const result = await Recipes.find({ owner: { $eq: user._id } }).count();
+  if (!result) {
+    throw HttpError(404);
+  }
+  res.json(result);
+};
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   logout: ctrlWrapper(logout),
   current: ctrlWrapper(current),
   updateUser: ctrlWrapper(updateUser),
+  authDayInSoYummy: ctrlWrapper(authDayInSoYummy),
+  authFavoritesRecipes: ctrlWrapper(authFavoritesRecipes),
+  authOwnRecipes: ctrlWrapper(authOwnRecipes),
 };
