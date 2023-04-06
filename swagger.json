@@ -1,7 +1,7 @@
 {
    "openapi":"3.0.1",
    "info":{
-    "version":"1.0.4",
+    "version":"1.0.5",
     "title": "Recipies API",
     "description":"Swagger for recipes"
    },
@@ -141,8 +141,8 @@
    "components":{
       "schemas":{
          "Auth":{
-             "type":"object",
-             "properties":{
+             "type":"array",
+             "items":{
                "RegistrationRequest":{
             "type":"object",
             "required":["name","email","password"],
