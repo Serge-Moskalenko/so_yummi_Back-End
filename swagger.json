@@ -14,7 +14,7 @@
    },
    {
     "name":"User",
-    "description":"Authenticated user endpoint"
+    "description":"Authorized user endpoint"
    }],
    "paths":{
       "auth/register":{
