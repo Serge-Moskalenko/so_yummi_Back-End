@@ -143,6 +143,8 @@
          "Auth":{
              "type":"array",
              "items":{
+               "type":"object",
+               "properties":{
                "RegistrationRequest":{
             "type":"object",
             "required":["name","email","password"],
@@ -224,11 +226,11 @@
                }
                   }
                }
-      }
+              }
          }
       }
        
-         },
+         }},
          "User":{
             "type":"object",
              "properties":{}
