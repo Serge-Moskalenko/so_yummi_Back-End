@@ -77,9 +77,9 @@ const Recipes = mongoose.model("recipe", schema);
 const addRecipeJoiSchema = Joi.object({
   title: Joi.string().required(),
   category: Joi.string().required(),
-  area: Joi.string().required(),
+  area: Joi.string(),
   instructions: Joi.string().required(),
-  description: Joi.string().required(),
+  description: Joi.string(),
   thumb: Joi.string(),
   preview: Joi.string(),
   time: Joi.string().required(),

@@ -1,8 +1,11 @@
+const { default: mongoose } = require("mongoose");
 const { HttpError } = require("../helpers");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
 const { Ingredient } = require("../models/ingredient");
 const { Recipes } = require("../models/recipes");
 const { User } = require("../models/user");
+const ingredients = require("./ingredients");
+const ObjectId = mongoose.Types.ObjectId;
 //
 const categoriesType = [
   "Beef",
@@ -61,7 +64,42 @@ const recipesByCategory = async (req, res) => {
 ///////
 const recipesById = async (req, res) => {
   const { recipesId } = req.params;
-  const recipe = await Recipes.find({ _id: { $eq: recipesId } });
+  const recipe = await Recipes.aggregate([
+    { $match: { _id: ObjectId(recipesId.toString()) } },
+    {
+      $lookup: {
+        from: "ingredients",
+        localField: "ingredients.id",
+        foreignField: "_id",
+        as: "ingr_nfo",
+      },
+    },
+    {
+      $set: {
+        ingredients: {
+          $map: {
+            input: "$ingredients",
+            in: {
+              $mergeObjects: [
+                "$$this",
+                {
+                  $arrayElemAt: [
+                    "$ingr_nfo",
+                    {
+                      $indexOfArray: ["$ingr_nfo._id", "$$this.id"],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+    {
+      $unset: ["ingr_nfo", "ingredients.id"],
+    },
+  ]);
   if (!recipe) {
     throw HttpError(404, "Not found");
   }
