@@ -194,6 +194,72 @@ const addFavoriteRecipe = async (req, res) => {
   res.status(200).json({ message: "Recepi added to favorite" });
 };
 
+const addIngredientToShoppingList = async (req, res) => {
+  const { _id } = req.user;
+  const { ingredientId } = req.params;
+  const ingredient = await Ingredient.find({ _id: { $eq: ingredientId } });
+  const data = await User.findByIdAndUpdate(
+    _id,
+    { $push: { shoppingList: ingredient } },
+    { new: true }
+  );
+  if (!data) {
+    throw HttpError(404, "Not found");
+  }
+  res.status(200).json({ message: "Ingredient added to cart" });
+  // const { _id } = req.user;
+  // const { recipesId } = req.params;
+  // const recipe = await Recipes.aggregate([
+  //   {
+  //     $match: {
+  //       _id: recipesId,
+  //     },
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "ingredients",
+  //       localField: "ingredients.id",
+  //       foreignField: "_id",
+  //       as: "ingr_nfo",
+  //     },
+  //   },
+  //   {
+  //     $set: {
+  //       ingredients: {
+  //         $map: {
+  //           input: "$ingredients",
+  //           in: {
+  //             $mergeObjects: [
+  //               "$$this",
+  //               {
+  //                 $arrayElemAt: [
+  //                   "$ingr_nfo",
+  //                   {
+  //                     $indexOfArray: ["$ingr_nfo._id", "$$this.id"],
+  //                   },
+  //                 ],
+  //               },
+  //             ],
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
+  //   {
+  //     $unset: ["ingr_nfo", "ingredients.id"],
+  //   },
+  // ]);
+  // const data = await User.findByIdAndUpdate(
+  //   _id,
+  //   { $push: { shoppingList: recipe } },
+  //   { new: true }
+  // );
+  // if (!data) {
+  //   throw HttpError(404, "Not found");
+  // }
+  // res.status(200).json({ recipe });
+};
+
 module.exports = {
   recipesCategory: ctrlWrapper(recipesCategory),
 
@@ -209,4 +275,6 @@ module.exports = {
 
   addFavoriteRecipe: ctrlWrapper(addFavoriteRecipe),
   mainPage: ctrlWrapper(mainPage),
+
+  addIngredientToShoppingList: ctrlWrapper(addIngredientToShoppingList),
 };

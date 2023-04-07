@@ -13,6 +13,7 @@ const {
   removeRecipes,
   getOwnerRecipes,
   addFavoriteRecipe,
+  addIngredientToShoppingList,
 } = require("../../controllers/recipes");
 const { addRecipeJoiSchema } = require("../../models/recipes");
 const { authMiddleware, validateBody } = require("../../middlewares/index");
@@ -40,6 +41,11 @@ router.delete(
   removeRecipes
 );
 router.get("/ownRecipes/getRecipes", authMiddleware, getOwnerRecipes);
-router.post("/byId/:recipesId", authMiddleware, addFavoriteRecipe);
+router.post("/byIdToFavorite/:recipesId", authMiddleware, addFavoriteRecipe);
+router.post(
+  "/byIdToShoplist/:recipesId",
+  authMiddleware,
+  addIngredientToShoppingList
+);
 
 module.exports = router;

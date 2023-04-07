@@ -18,7 +18,10 @@ const register = async (req, res) => {
     password: hashPassword,
     avatar: defaultAvatar,
   });
+  const token = jwt.sign({ id: newUser._id }, SECRET_KEY, { expiresIn: "24h" });
+
   res.status(201).json({
+    token,
     user: {
       name: newUser.name,
       email: newUser.email,
@@ -39,10 +42,7 @@ const login = async (req, res) => {
   if (!isValidPassword) {
     throw HttpError(401, "Email or password is wrong");
   }
-  const payload = {
-    id: user._id,
-  };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
+  const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "24h" });
   await User.findByIdAndUpdate(user._id, { token });
   res.json({
     token,
@@ -60,8 +60,8 @@ const logout = async (req, res) => {
 };
 
 const current = async (req, res) => {
-  const { name, avatar, favorite } = req.user;
-  res.status(200).json({ name, avatar, favorite });
+  const user = req.user;
+  res.status(200).json({ user });
 };
 
 const updateUser = async (req, res) => {

@@ -4,6 +4,6 @@ const ctrl = require("../../controllers/favorite");
 const { authMiddleware } = require("../../middlewares");
 
 router.get("/", authMiddleware, ctrl.getFavoriteRecipe);
-router.delete("/", authMiddleware, ctrl.removeFavoriteRecipe);
+router.delete("/:recipesId", authMiddleware, ctrl.removeFavoriteRecipe);
 
 module.exports = router;
