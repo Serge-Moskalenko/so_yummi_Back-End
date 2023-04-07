@@ -207,11 +207,16 @@ const removeRecipes = async (req, res) => {
   });
 };
 const getOwnerRecipes = async (req, res) => {
+  const { pages = 1, limit = 4 } = req.query;
+  const skip = (pages - 1) * limit;
+
   const user = req.user;
   if (!user) {
     throw HttpError(401);
   }
-  const result = await Recipes.find({ owner: { $eq: user._id } });
+  const result = await Recipes.find({ owner: { $eq: user._id } })
+    .skip(skip)
+    .limit(limit);
 
   res.json(result);
 };
