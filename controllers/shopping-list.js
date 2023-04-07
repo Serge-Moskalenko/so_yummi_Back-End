@@ -9,7 +9,7 @@ const getShoppingList = async (req, res) => {
 
 const removeShoppingList = async (req, res) => {
   const { _id } = req.user;
-  const { ingredientId } = req.body;
+  const { ingredientId } = req.params;
   const data = await User.findByIdAndUpdate(
     _id,
     {
