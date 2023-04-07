@@ -27,6 +27,14 @@ const categoriesType = [
 
 const mainPage = async (req, res, next) => {
   const result = await Recipes.aggregate([
+    {
+      $match: {
+        category: {
+          $in: ["Breakfast", "Miscellaneous", "Chicken", "Dessert"],
+        },
+      },
+    },
+    { $sort: { category: 1 } },
     { $group: { _id: "$category", items: { $push: "$$ROOT" } } },
     { $project: { meals: { $slice: ["$items", 4] } } },
     { $limit: 4 },
