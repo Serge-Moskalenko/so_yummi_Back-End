@@ -252,8 +252,8 @@ const addIngredientToShoppingList = async (req, res) => {
     throw HttpError(401);
   }
   const data = await Cart.create({
+    ...req.body,
     idIngrCart: ingredientId,
-    measure,
     owner: _id,
   });
   if (!data) {
