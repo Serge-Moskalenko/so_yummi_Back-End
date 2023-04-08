@@ -20,7 +20,7 @@ const userSchema = new Schema(
       type: String,
     },
     favorite: [{ type: SchemaTypes.ObjectId, ref: "recipe" }],
-    shoppingList: [{ type: SchemaTypes.ObjectId, ref: "ingredient" }],
+    shoppingList: [{ type: SchemaTypes.ObjectId, ref: "cart" }],
     token: String,
   },
   { versionKey: false, timestamps: true }

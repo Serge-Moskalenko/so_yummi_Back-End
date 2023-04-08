@@ -4,7 +4,7 @@ const { User } = require("../models/user");
 const getShoppingList = async (req, res) => {
   const { _id } = req.user;
   const data = await User.findById(_id).populate("shoppingList");
-  res.status(200).json(data);
+  res.status(200).json(data.shoppingList);
 };
 
 const removeShoppingList = async (req, res) => {
@@ -20,7 +20,7 @@ const removeShoppingList = async (req, res) => {
   if (!data) {
     throw HttpError(404, "Not found");
   }
-  res.status(200).json({ message: "Ingredient deleted" });
+  res.status(200).json({ message: "Ingredient deleted from cart" });
 };
 
 module.exports = {
