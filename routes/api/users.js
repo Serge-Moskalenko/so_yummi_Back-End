@@ -17,7 +17,7 @@ const {
 router.post("/register", validateBody(userJoiRegisterSchema), ctrl.register);
 router.get("/google", google);
 router.get("/google-redirect", googleRedirect);
-router.get("/login", validateBody(userJoiLoginSchema), ctrl.login);
+router.post("/login", validateBody(userJoiLoginSchema), ctrl.login);
 router.get("/current", authMiddleware, ctrl.current);
 router.post("/logout", authMiddleware, ctrl.logout);
 router.patch(
