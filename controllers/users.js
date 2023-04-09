@@ -20,7 +20,7 @@ const register = async (req, res) => {
     avatar: defaultAvatar,
   });
   const token = jwt.sign({ id: newUser._id }, SECRET_KEY, { expiresIn: "24h" });
-
+  newUser.token = token;
   res.status(201).json({
     token,
     user: {
@@ -39,12 +39,10 @@ const login = async (req, res) => {
   if (!user) {
     throw HttpError(401, "Email or password is wrong");
   }
-  const isValidPassword = bcryptjs.compareSync(password, user.password);
-  if (!isValidPassword) {
-    throw HttpError(401, "Email or password is wrong");
+  if (user && (await bcryptjs.compareSync(password, user.password))) {
+    const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "24h" });
+    user.token = token;
   }
-  const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "24h" });
-  await User.findByIdAndUpdate(user._id, { token });
   res.json({
     token,
     user: {

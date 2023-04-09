@@ -5,6 +5,7 @@ const { Ingredient } = require("../models/ingredient");
 const { Recipes } = require("../models/recipes");
 const { User } = require("../models/user");
 const ingredients = require("./ingredients");
+const { Cart } = require("../models/cart");
 const ObjectId = mongoose.Types.ObjectId;
 //
 const categoriesType = [
@@ -214,6 +215,7 @@ const removeRecipes = async (req, res) => {
     },
   });
 };
+
 const getOwnerRecipes = async (req, res) => {
   const { pages = 1, limit = 4 } = req.query;
   const skip = (pages - 1) * limit;
@@ -253,68 +255,26 @@ const addFavoriteRecipe = async (req, res) => {
 
 const addIngredientToShoppingList = async (req, res) => {
   const { _id } = req.user;
-  const { ingredientId } = req.params;
-  const ingredient = await Ingredient.find({ _id: { $eq: ingredientId } });
-  const data = await User.findByIdAndUpdate(
+  const { ingredientId, measure } = req.body;
+  if (!req.user) {
+    throw HttpError(401);
+  }
+  const data = await Cart.create({
+    ...req.body,
+    idIngrCart: ingredientId,
+    owner: _id,
+  });
+  if (!data) {
+    throw HttpError(404);
+  }
+  const result = await User.findByIdAndUpdate(
     _id,
-    { $push: { shoppingList: ingredient } },
+    {
+      $push: { shoppingList: data },
+    },
     { new: true }
   );
-  if (!data) {
-    throw HttpError(404, "Not found");
-  }
   res.status(200).json({ message: "Ingredient added to cart" });
-  // const { _id } = req.user;
-  // const { recipesId } = req.params;
-  // const recipe = await Recipes.aggregate([
-  //   {
-  //     $match: {
-  //       _id: recipesId,
-  //     },
-  //   },
-  //   {
-  //     $lookup: {
-  //       from: "ingredients",
-  //       localField: "ingredients.id",
-  //       foreignField: "_id",
-  //       as: "ingr_nfo",
-  //     },
-  //   },
-  //   {
-  //     $set: {
-  //       ingredients: {
-  //         $map: {
-  //           input: "$ingredients",
-  //           in: {
-  //             $mergeObjects: [
-  //               "$$this",
-  //               {
-  //                 $arrayElemAt: [
-  //                   "$ingr_nfo",
-  //                   {
-  //                     $indexOfArray: ["$ingr_nfo._id", "$$this.id"],
-  //                   },
-  //                 ],
-  //               },
-  //             ],
-  //           },
-  //         },
-  //       },
-  //     },
-  //   },
-  //   {
-  //     $unset: ["ingr_nfo", "ingredients.id"],
-  //   },
-  // ]);
-  // const data = await User.findByIdAndUpdate(
-  //   _id,
-  //   { $push: { shoppingList: recipe } },
-  //   { new: true }
-  // );
-  // if (!data) {
-  //   throw HttpError(404, "Not found");
-  // }
-  // res.status(200).json({ recipe });
 };
 
 module.exports = {

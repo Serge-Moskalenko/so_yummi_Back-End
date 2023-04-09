@@ -17,6 +17,7 @@ const {
 } = require("../../controllers/recipes");
 const { addRecipeJoiSchema } = require("../../models/recipes");
 const { authMiddleware, validateBody } = require("../../middlewares/index");
+const { cartJoiSchema } = require("../../models/cart");
 
 const router = express.Router();
 
@@ -45,6 +46,7 @@ router.post("/byIdToFavorite/:recipesId", authMiddleware, addFavoriteRecipe);
 router.post(
   "/byIdToShoplist/:recipesId",
   authMiddleware,
+  validateBody(cartJoiSchema),
   addIngredientToShoppingList
 );
 
