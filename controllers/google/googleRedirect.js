@@ -53,4 +53,5 @@ exports.googleRedirect = async (req, res) => {
         }
     };
 
+    googleAuth()
 };
