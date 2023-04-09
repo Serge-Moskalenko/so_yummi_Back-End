@@ -1,7 +1,9 @@
 const queryString = require("query-string");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const { User } = require("../../models/user");
+const { nanoid } = require("nanoid");
 
 exports.googleRedirect = async (req, res) => {
     const fullUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
@@ -31,34 +33,30 @@ exports.googleRedirect = async (req, res) => {
     const user = await User.findOne({ email });
     
     const googleRegister = async () => {
-        await axios({
-            url: "https://recipes-becend-49lg.onrender.com/auth/register",
-            method: 'post',
-            data: {
-                name: userData.data.name,
-                email: userData.data.email,
-                password: userData.data.id,
-            }
-        })
+        const password = await bcrypt.hash(nanoid(), 10);
+        const defaultAvatar ="https://res.cloudinary.com/do316uvkf/image/upload/v1680493837/szccttwukvqfijjovgz5.jpg";
+        
+        const newUser = await User.create({
+            name: userData.data.name,
+            email,
+            password,
+            avatar: defaultAvatar,
+        });
+        
+        newUser.token = jwt.sign({ id: newUser._id }, SECRET_KEY, { expiresIn: "24h" });
+        
     };
 
-      const googleLogin = async() => {
-        await axios({
-            url: "https://recipes-becend-49lg.onrender.com/auth/login",
-            method: 'get',
-            data: {
-                email: userData.data.email,
-                password: userData.data.id,
-            }
-        })
+    const googleLogin = async () => {
+        const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "24h" });
+        await User.findByIdAndUpdate(user._id, { token });
     };
 
     if (user) {
         googleLogin()
     } else {
         googleRegister()
-        googleLogin()
     }
 
-    return res.redirect(`https://4106677.github.io/so-yummy-front-end/main`)
+    return res.redirect(`https://4106677.github.io/so-yummy-front-end/main?token=${User.token}`)
 };
