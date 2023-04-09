@@ -13,7 +13,7 @@ const register = async (req, res) => {
   }
   const hashPassword = bcryptjs.hashSync(password, bcryptjs.genSaltSync(10));
   const defaultAvatar =
-    "https://res.cloudinary.com/do316uvkf/image/upload/v1680493993/avatars/ccsh3dpzpsloytws5qa3.jpg";
+    "https://res.cloudinary.com/do316uvkf/image/upload/v1680493837/szccttwukvqfijjovgz5.jpg";
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
@@ -39,10 +39,15 @@ const login = async (req, res) => {
   if (!user) {
     throw HttpError(401, "Email or password is wrong");
   }
-  if (user && (await bcryptjs.compareSync(password, user.password))) {
-    const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "24h" });
-    user.token = token;
+  const isValidPassword = bcryptjs.compareSync(password, user.password);
+  if (!isValidPassword) {
+    throw HttpError(401, "Email or password is wrong");
   }
+  const payload = {
+    id: user._id,
+  };
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
+  await User.findByIdAndUpdate(user._id, { token });
   res.json({
     token,
     user: {
@@ -70,6 +75,9 @@ const updateUser = async (req, res) => {
     { ...req.body, ...req.file },
     { new: true }
   );
+  if (!data) {
+    throw HttpError(404, "Not found");
+  }
   try {
     if (req.file) {
       await User.findByIdAndUpdate(_id, { avatar: req.file.path });
@@ -77,9 +85,7 @@ const updateUser = async (req, res) => {
   } catch (error) {
     throw error;
   }
-  if (!data) {
-    throw HttpError(404, "Not found");
-  }
+
   res.status(200).json({ message: "User profile updated successfully" });
 };
 

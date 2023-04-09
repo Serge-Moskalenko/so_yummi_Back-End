@@ -235,6 +235,9 @@ const addFavoriteRecipe = async (req, res) => {
   const { _id } = req.user;
   const { recipesId } = req.params;
   const recipe = await Recipes.find({ _id: { $eq: recipesId } });
+  if (!recipe) {
+    throw HttpError(404, "Not found");
+  }
   const data = await User.findByIdAndUpdate(
     _id,
     {
@@ -274,6 +277,9 @@ const addIngredientToShoppingList = async (req, res) => {
     },
     { new: true }
   );
+  if (!result) {
+    throw HttpError(404);
+  }
   res.status(200).json({ message: "Ingredient added to cart" });
 };
 
