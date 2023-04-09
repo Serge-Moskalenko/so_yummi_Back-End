@@ -30,10 +30,10 @@ exports.googleRedirect = async (req, res) => {
     });
  
 
-    const googleAuth = async () => {
-        const {email}=userData.data
+    const googleAuth = async (res) => {
+        const { email } = userData.data
+        const user = await User.findOne({ email });
 
-    const user = await User.findOne({ email });
         if (!user) {
             const password = await bcrypt.hash(nanoid(), 10);
             const defaultAvatar = "https://res.cloudinary.com/do316uvkf/image/upload/v1680493837/szccttwukvqfijjovgz5.jpg";
@@ -54,5 +54,5 @@ exports.googleRedirect = async (req, res) => {
         }
     };
 
-    googleAuth()
+    googleAuth(res)
 };
