@@ -28,11 +28,12 @@ exports.googleRedirect = async (req, res) => {
         method: 'get',
         headers: { Authorization: `Bearer ${googleToken.data.access_token}` }
     });
-    const {email}=userData.data
-
-    const user = await User.findOne({ email });
+ 
 
     const googleAuth = async () => {
+        const {email}=userData.data
+
+    const user = await User.findOne({ email });
         if (!user) {
             const password = await bcrypt.hash(nanoid(), 10);
             const defaultAvatar = "https://res.cloudinary.com/do316uvkf/image/upload/v1680493837/szccttwukvqfijjovgz5.jpg";
