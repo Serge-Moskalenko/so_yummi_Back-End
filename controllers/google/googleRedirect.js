@@ -31,32 +31,26 @@ exports.googleRedirect = async (req, res) => {
     const {email}=userData.data
 
     const user = await User.findOne({ email });
-    
-    const googleRegister = async () => {
-        const password = await bcrypt.hash(nanoid(), 10);
-        const defaultAvatar ="https://res.cloudinary.com/do316uvkf/image/upload/v1680493837/szccttwukvqfijjovgz5.jpg";
+
+    const googleAuth = async () => {
+        if (!user) {
+            const password = await bcrypt.hash(nanoid(), 10);
+            const defaultAvatar = "https://res.cloudinary.com/do316uvkf/image/upload/v1680493837/szccttwukvqfijjovgz5.jpg";
         
-        const newUser = await User.create({
-            name: userData.data.name,
-            email,
-            password,
-            avatar: defaultAvatar,
-        });
-        
-        newUser.token = jwt.sign({ id: newUser._id }, SECRET_KEY, { expiresIn: "24h" });
-        
+            const newUser = await User.create({
+                name: userData.data.name,
+                email,
+                password,
+                avatar: defaultAvatar,
+            });
+            
+            newUser.token = jwt.sign({ id: newUser._id }, SECRET_KEY, { expiresIn: "24h" });
+            return res.redirect(`https://4106677.github.io/so-yummy-front-end/main?token=${newUser.token}`)
+        } else {
+            const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "24h" });
+            await User.findByIdAndUpdate(user._id, { token });
+            return res.redirect(`https://4106677.github.io/so-yummy-front-end/main?token=${token}`)
+        }
     };
 
-    const googleLogin = async () => {
-        const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "24h" });
-        await User.findByIdAndUpdate(user._id, { token });
-    };
-
-    if (user) {
-        googleLogin()
-    } else {
-        googleRegister()
-    }
-
-    return res.redirect(`https://4106677.github.io/so-yummy-front-end/main?token=${User.token}`)
 };
