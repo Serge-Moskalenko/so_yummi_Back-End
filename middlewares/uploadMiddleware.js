@@ -20,6 +20,19 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const storage2 = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "recipes",
+    allowedFormats: ["jpg", "png"],
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
 
-module.exports = upload;
+module.exports = {
+  cloudinary,
+  storage,
+  storage2,
+};
