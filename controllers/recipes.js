@@ -1,3 +1,4 @@
+const cloudinary = require("cloudinary").v2;
 const { default: mongoose } = require("mongoose");
 const { HttpError } = require("../helpers");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
@@ -187,7 +188,23 @@ const addRecipes = async (req, res) => {
   if (!user) {
     throw HttpError(401);
   }
-
+  const { preview } = req.body;
+  console.log(preview);
+  if (preview) {
+    try {
+      const uploadedImage = await cloudinary.uploader.upload(
+        preview.toString(),
+        {
+          upload_preset: "avatars",
+        }
+      );
+      console.log(uploadedImage);
+      req.body.preview = uploadedImage.url;
+      console.log(req.body);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
   const result = await Recipes.create({ ...req.body, owner: user._id });
   if (!result) {
     throw HttpError(404);
