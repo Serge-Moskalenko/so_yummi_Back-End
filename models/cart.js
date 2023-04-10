@@ -6,6 +6,7 @@ const cartSchema = new Schema(
     ingredientId: {
       type: String,
     },
+    ingredientInfo: [],
     measure: {
       type: String,
     },

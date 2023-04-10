@@ -261,9 +261,13 @@ const addIngredientToShoppingList = async (req, res) => {
   if (!req.user) {
     throw HttpError(401);
   }
+  const ingredientInfo = await Ingredient.aggregate([
+    { $match: { _id: ObjectId(ingredientId.toString()) } },
+    { $project: { _id: 0, ttl: 1, thb: 1 } },
+  ]);
   const data = await Cart.create({
     ...req.body,
-    idIngrCart: ingredientId,
+    ingredientInfo: ingredientInfo,
     owner: _id,
   });
   if (!data) {
