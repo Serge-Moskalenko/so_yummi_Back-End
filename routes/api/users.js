@@ -2,17 +2,16 @@ const express = require("express");
 const router = express.Router();
 const ctrl = require("../../controllers/users");
 const { google, googleRedirect } = require("../../controllers/google");
-const {
-  validateBody,
-  authMiddleware,
-  isValidId,
-  upload,
-} = require("../../middlewares");
+const { validateBody, authMiddleware } = require("../../middlewares");
 const {
   userJoiRegisterSchema,
   userJoiLoginSchema,
   updateUserJoiSchema,
 } = require("../../models/user");
+
+const multer = require("multer");
+const { storage } = require("../../middlewares");
+const upload = multer({ storage });
 
 router.post("/register", validateBody(userJoiRegisterSchema), ctrl.register);
 router.get("/google", google);

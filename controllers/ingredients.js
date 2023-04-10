@@ -2,7 +2,6 @@ const { HttpError } = require("../helpers");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
 const { Ingredient } = require("../models/ingredient");
 const { Recipes } = require("../models/recipes");
-const { User } = require("../models/user");
 
 ///////
 const ingredientsList = async (req, res) => {

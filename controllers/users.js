@@ -124,11 +124,13 @@ const authDayInSoYummy = async (req, res) => {
   }
   res.json(result);
 };
+
 const authFavoritesRecipes = async (req, res) => {
   const { favorite } = req.user;
 
   res.json(favorite.length);
 };
+
 const authOwnRecipes = async (req, res) => {
   const user = req.user;
   if (!user) {
@@ -140,6 +142,7 @@ const authOwnRecipes = async (req, res) => {
   }
   res.json(result);
 };
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
