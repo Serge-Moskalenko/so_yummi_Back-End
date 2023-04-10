@@ -32,19 +32,19 @@ exports.googleRedirect = async (req, res) => {
 
         const { email } = userData.data
     const user = await User.findOne({ email });
-     const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "24h" });
 
         if (!user) {
         
-           await User.create({
+          const newUser= await User.create({
                 name: userData.data.name,
                 email: userData.data.email,
                 password: await bcrypt.hash(nanoid(), 10),
                 avatar: "https://res.cloudinary.com/do316uvkf/image/upload/v1680493837/szccttwukvqfijjovgz5.jpg",
-                token
-            });
+          });
+            newUser.token=jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "24h" });
             
         } else {
+            const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "24h" });
             await User.findByIdAndUpdate(user._id, { token });  
     };
     

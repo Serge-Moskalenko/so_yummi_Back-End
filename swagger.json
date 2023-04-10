@@ -7,7 +7,7 @@
    },
    "cunsumes":["application/json","multipart/form-data"],
    "produces":["application/json"],
-   "servers":[{"url":"https://recipes-becend-49lg.onrender.com"}],
+  "servers":[{"url":"https://recipes-becend-49lg.onrender.com"}],
    "tags":[{
       "name":"Auth",
     "description":"Authorization endpoints"
@@ -163,25 +163,32 @@
             }
          },
          "Auth.RegistrationResponse":{
-            "type":"object",
+           "type":"object",
             "properties":{
-               "name":{
+               "token":{
+                  "type":"string",
+                  "description":"User's token",
+                  "example":"31421425252351341412"
+               },
+               "user":{
+                  "type":"object",
+                  "properties":{
+                     "name":{
                   "type":"string",
                   "description":"User's name",
                   "example":"Nick"
                },
-               "email":{
+                  "email":{
                   "type":"string",
                   "description":"User's email",
                   "format":"email"
-
                },
-               "avatar":{
+                "avatar":{
                   "type":"string",
-                  "description":"User's defaultAvatar"
+                  "description":"User's defaultAvatar",
+                  "example":"https://res.cloudinary.com/do316uvkf/image/upload/v1680493837/szccttwukvqfijjovgz5.jpg"
                }
-         }
-         },
+         }}}},
          "Auth.LoginRequest":{
             "type":"object",
             "required":["email","password"],
