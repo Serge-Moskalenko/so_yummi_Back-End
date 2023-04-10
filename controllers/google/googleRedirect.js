@@ -47,6 +47,7 @@ exports.googleRedirect = async (req, res) => {
             const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "24h" });
             await User.findByIdAndUpdate(user._id, { token });  
     };
+
     
-    return res.redirect(`https://4106677.github.io/so-yummy-front-end/main?token=${token}`)
+    return res.redirect(`https://4106677.github.io/so-yummy-front-end/main?token=${user.token}`)
 };
