@@ -19,7 +19,7 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const storage2 = new CloudinaryStorage({
+const storageRecipes = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "recipes",
@@ -33,5 +33,5 @@ const storage2 = new CloudinaryStorage({
 module.exports = {
   cloudinary,
   storage,
-  storage2,
+  storageRecipes,
 };

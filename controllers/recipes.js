@@ -1,3 +1,4 @@
+const cloudinary = require("cloudinary").v2;
 const { default: mongoose } = require("mongoose");
 const { HttpError } = require("../helpers");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
@@ -5,6 +6,7 @@ const { Ingredient } = require("../models/ingredient");
 const { Recipes } = require("../models/recipes");
 const { User } = require("../models/user");
 const { Cart } = require("../models/cart");
+
 const ObjectId = mongoose.Types.ObjectId;
 //
 const categoriesType = [
@@ -59,7 +61,7 @@ const recipesCategory = async (req, res) => {
 ///////
 const recipesByCategory = async (req, res) => {
   const { category = "Beef" } = req.params;
-  console.log(category);
+
   const result = await Recipes.find({
     category: { $regex: category, $options: "i" },
   }).limit(8);
@@ -186,12 +188,21 @@ const addRecipes = async (req, res) => {
   if (!user) {
     throw HttpError(401);
   }
+  const { preview, title } = req.body;
 
+  if (preview) {
+    try {
+      const previewNew = "data:image/png;base64," + preview.toString();
+      const uploadedImage = await cloudinary.uploader.upload(previewNew);
+      req.body.preview = uploadedImage.url;
+    } catch (error) {}
+  }
   const result = await Recipes.create({ ...req.body, owner: user._id });
   if (!result) {
     throw HttpError(404);
   }
-  res
+
+  return res
     .status(201)
     .json({ data: { result, message: "Recipe added successfully" } });
 };
