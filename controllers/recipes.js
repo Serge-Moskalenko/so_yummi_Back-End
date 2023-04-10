@@ -6,6 +6,7 @@ const { Ingredient } = require("../models/ingredient");
 const { Recipes } = require("../models/recipes");
 const { User } = require("../models/user");
 const { Cart } = require("../models/cart");
+
 const ObjectId = mongoose.Types.ObjectId;
 //
 const categoriesType = [
@@ -60,7 +61,7 @@ const recipesCategory = async (req, res) => {
 ///////
 const recipesByCategory = async (req, res) => {
   const { category = "Beef" } = req.params;
-  console.log(category);
+
   const result = await Recipes.find({
     category: { $regex: category, $options: "i" },
   }).limit(8);
@@ -191,21 +192,17 @@ const addRecipes = async (req, res) => {
 
   if (preview) {
     try {
-      const uploadedImage = await cloudinary.uploader.upload(preview, {
-        transformation: [{ fetch_format: "auto" }],
-      });
-      console.log(uploadedImage, "uploadedImage");
+      const previewNew = "data:image/png;base64," + preview.toString();
+      const uploadedImage = await cloudinary.uploader.upload(previewNew);
       req.body.preview = uploadedImage.url;
-      console.log(req.body);
-    } catch (error) {
-      console.log(error.message);
-    }
+    } catch (error) {}
   }
   const result = await Recipes.create({ ...req.body, owner: user._id });
   if (!result) {
     throw HttpError(404);
   }
-  res
+
+  return res
     .status(201)
     .json({ data: { result, message: "Recipe added successfully" } });
 };

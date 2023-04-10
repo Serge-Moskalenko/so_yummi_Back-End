@@ -28,7 +28,6 @@ const storage2 = new CloudinaryStorage({
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
-    console.log(file.originalname, "orin name");
   },
 });
 
