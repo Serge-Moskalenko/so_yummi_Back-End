@@ -187,17 +187,14 @@ const addRecipes = async (req, res) => {
   if (!user) {
     throw HttpError(401);
   }
-  const { preview } = req.body;
-  console.log(preview);
+  const { preview, title } = req.body;
+
   if (preview) {
     try {
-      const uploadedImage = await cloudinary.uploader.upload(
-        preview.toString(),
-        {
-          upload_preset: "avatars",
-        }
-      );
-      console.log(uploadedImage);
+      const uploadedImage = await cloudinary.uploader.upload(preview, {
+        transformation: [{ fetch_format: "auto" }],
+      });
+      console.log(uploadedImage, "uploadedImage");
       req.body.preview = uploadedImage.url;
       console.log(req.body);
     } catch (error) {
