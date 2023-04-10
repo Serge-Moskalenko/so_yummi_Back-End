@@ -19,8 +19,8 @@ const { addRecipeJoiSchema } = require("../../models/recipes");
 const { authMiddleware, validateBody } = require("../../middlewares/index");
 const { cartJoiSchema } = require("../../models/cart");
 const multer = require("multer");
-const { storage2 } = require("../../middlewares");
-const upload = multer({ storage2 });
+const { storageRecipes } = require("../../middlewares");
+const upload = multer({ storageRecipes });
 
 const router = express.Router();
 
@@ -36,8 +36,9 @@ router.get("/popular-recipes", popularRecipes);
 router.post(
   "/ownRecipes/addRecipe",
   authMiddleware,
-  validateBody(addRecipeJoiSchema),
   upload.single("recipes"),
+  validateBody(addRecipeJoiSchema),
+
   addRecipes
 );
 router.delete(
