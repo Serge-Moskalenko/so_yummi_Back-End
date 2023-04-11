@@ -1,13 +1,13 @@
 {
    "openapi":"3.0.1",
    "info":{
-    "version":"1.0.5",
+    "version":"1.0.6",
     "title": "Recipies API",
     "description":"Swagger for recipes"
    },
    "cunsumes":["application/json","multipart/form-data"],
    "produces":["application/json"],
-  "servers":[{"url":"https://recipes-becend-49lg.onrender.com"}],
+   "servers":[{"url":"https://recipes-becend-49lg.onrender.com"}],
    "tags":[{
       "name":"Auth",
     "description":"Authorization endpoints"
@@ -45,12 +45,10 @@
                   }
                },
                "400":{
-                  "description":"Bad request",
-                  "content":{}
+                  "description":"Bad request"
                },
                "409":{
-               "description":"Email in use",
-               "content":{}
+               "description":"Email in use"
                }
             }
          }
@@ -94,7 +92,7 @@
          }
       },
       "auth/logout":{
-         "get":{
+         "post":{
             "tags":["Auth"],
             "summery":"User logout",
             "security":[{"Bearer":[]}],
@@ -117,7 +115,6 @@
             "tags":["User"],
             "summery":" Current user",
             "security":[{"Bearer":[]}],
-            "parameters":[],
             "requestBody":{},
             "responses":{
                "200":{
@@ -125,7 +122,7 @@
                   "content":{
                      "application/json":{
                        "schema":{
-                        "$ref":"#/components/schemas/Auth.LoginResponse"
+                        "$ref":"#/components/schemas/User.Current"
                        }
                      }
                   }
@@ -133,6 +130,109 @@
                "401":{
                   "description":"Not authenticated",
                   "content":{}
+               }
+            }
+         }
+      },
+     "auth/updateUser":{
+         "patch":{
+            "tags":["User"],
+            "summery":"User's update",
+            "security":[{"Bearer":[]}],
+            "requestBody":{
+                "description":"User's update object",
+               "content":{
+                  "multipart/form-data":{
+                     "schema":{
+                        "$ref":"#/components/schemas/User.UpdateUser"
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "200":{
+                  "description":"User profile updated successfully"
+               },
+               "401":{
+                  "description":"Not authenticated"
+               },
+               "404":{
+                  "description":"Not faund"
+               }
+            }
+         }
+      },
+       "auth/countDayInfo":{
+         "get":{
+            "tags":["User"],
+            "summery":"User's day's auth in SoYummy",
+            "security":[{"Bearer":[]}],
+            "responses":{  
+               "200":{
+                  "description":"Successes",
+                  "content":{
+                     "application/json":{
+                       "schema":{
+                        "$ref":"#/components/schemas/User.CountDayInfoResponse"
+                       }
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Not authenticated"
+               },
+               "404":{
+                  "description":"Not faund"
+               }
+            }
+         }
+      },
+      "auth/favoritesRecipes":{
+         "get":{
+            "tags":["User"],
+            "summery":"User's favorite recipes in SoYummy",
+            "security":[{"Bearer":[]}],
+            "responses":{  
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                       "schema":{
+                        "$ref":"#/components/schemas/User.FavoritesRecipesResponse"
+                       }
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Not authenticated"
+               },
+               "404":{
+                  "description":"Not faund"
+               }
+            }
+         }
+      },
+      "auth/authOwnRecipes":{
+         "get":{
+            "tags":["User"],
+            "summery":"User's favorite recipes in SoYummy",
+            "security":[{"Bearer":[]}],
+            "responses":{  
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                       "schema":{
+                        "$ref":"#/components/schemas/User.AuthOwnRecipesResponse"
+                       }
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Not authenticated"
+               },
+               "404":{
+                  "description":"Not faund"
                }
             }
          }
@@ -187,6 +287,16 @@
                   "type":"string",
                   "description":"User's defaultAvatar",
                   "example":"https://res.cloudinary.com/do316uvkf/image/upload/v1680493837/szccttwukvqfijjovgz5.jpg"
+               },
+               "favorite":{
+                  "type":"array",
+                  "description":"User's favorite",
+                  "example":[]
+               },
+               "shoppingList":{
+                  "type":"array",
+                  "description":"User's shoppingList",
+                  "example":[]
                }
          }}}},
          "Auth.LoginRequest":{
@@ -231,10 +341,80 @@
       }
        
          },
-         "User":{
+         "User.Current":{
             "type":"object",
-             "properties":{}
+             "properties":{
+               "token":{
+                  "type":"string",
+                  "description":"User's token",
+                  "example":"31421425252351341412"
+               },
+               "user":{
+                  "type":"object",
+                  "properties":{
+                     "name":{
+                  "type":"string",
+                  "description":"User's name",
+                  "example":"Nick"
+               },
+                  "email":{
+                  "type":"string",
+                  "description":"User's email",
+                  "format":"email"
+               },
+                "avatar":{
+                  "type":"string",
+                  "description":"User's defaultAvatar",
+                  "example":"https://res.cloudinary.com/do316uvkf/image/upload/v1680493837/szccttwukvqfijjovgz5.jpg"
+               },
+               "favorite":{
+                  "type":"array",
+                  "description":"User's favorite",
+                  "example":[]
+               },
+               "shoppingList":{
+                  "type":"array",
+                  "description":"User's shoppingList",
+                  "example":[]
+               }
+         }}
+             }
+         },
+         "User.UpdateUser":{
+            "type":"object",
+             "properties":{
+                "name":{
+                  "type":"string",
+                  "description":"User's name",
+                  "example":"Nick"
+               },"avatar":{
+                  "type":"file",
+                  "description":"User's avatar",
+                  "format":"binary"
+               }
+             }
+         },
+         "User.CountDayInfoResponse":{
+           "type":"array",
+           "items":{
+             "type":"object",
+            "properties":{
+               "numDays":{
+                  "type":"string",
+                  "example":"366"
+               }     
+            }
+           }
+         },
+         "User.FavoritesRecipesResponse":{
+            "type":"string",
+            "example":"0"
+         },
+         "User.AuthOwnRecipesResponse":{
+            "type":"string",
+            "example":"2"
          }
+    
       },
  "securitySchemes":{
             "Bearer":{
