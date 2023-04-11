@@ -54,7 +54,7 @@
          }
       },
       "auth/login":{
-         "get":{
+         "post":{
             "tags":["Auth"],
             "summery":"User login",
             "parameters":[],
