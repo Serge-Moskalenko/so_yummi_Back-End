@@ -193,11 +193,16 @@ const addRecipes = async (req, res) => {
   if (preview) {
     try {
       const previewNew = "data:image/png;base64," + preview.toString();
-      const uploadedImage = await cloudinary.uploader.upload(previewNew);
+      const uploadedImage = await cloudinary.uploader.upload(previewNew, {
+        folder: "recipes",
+      });
       req.body.preview = uploadedImage.url;
     } catch (error) {}
   }
-  const result = await Recipes.create({ ...req.body, owner: user._id });
+  const result = await Recipes.create({
+    ...req.body,
+    owner: user._id,
+  });
   if (!result) {
     throw HttpError(404);
   }

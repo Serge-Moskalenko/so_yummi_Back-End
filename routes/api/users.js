@@ -8,10 +8,7 @@ const {
   userJoiLoginSchema,
   updateUserJoiSchema,
 } = require("../../models/user");
-
-const multer = require("multer");
-const { storage } = require("../../middlewares");
-const upload = multer({ storage });
+const { upload } = require("../../middlewares");
 
 router.post("/register", validateBody(userJoiRegisterSchema), ctrl.register);
 router.get("/google", google);
