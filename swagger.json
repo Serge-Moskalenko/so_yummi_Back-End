@@ -1,13 +1,13 @@
 {
    "openapi":"3.0.1",
    "info":{
-    "version":"1.0.6",
+    "version":"1.0.7",
     "title": "Recipies API",
     "description":"Swagger for recipes"
    },
    "cunsumes":["application/json","multipart/form-data"],
    "produces":["application/json"],
-   "servers":[{"url":"https://localhost:3000"}],
+   "servers":[{"url":"https://recipes-becend-49lg.onrender.com"}],
    "tags":[{
       "name":"Auth",
     "description":"Authorization endpoints"
@@ -29,7 +29,6 @@
          "post":{
             "tags":["Auth"],
             "summery":"User registration",
-            "parameters":[],
             "requestBody":{
                "description":"Registration object",
                "required":true,
@@ -53,10 +52,29 @@
                   }
                },
                "400":{
-                  "description":"Bad request"
-               },
-               "409":{
-               "description":"Email in use"
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Bad request"
+                     }
+                  }
+               },"409":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Email in use"
+                     }
+                  }
+               },"500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
                }
             }
          }
@@ -65,7 +83,6 @@
          "post":{
             "tags":["Auth"],
             "summery":"User login",
-            "parameters":[],
             "requestBody":{
                "description":"Login object",
                "required":true,
@@ -87,14 +104,30 @@
                        }
                      }
                   }
-               },
-               "400":{
-                  "description":"Bad request",
-                  "content":{}
-               },
-               "401":{
-                  "description":"Email or password is wrong",
-                  "content":{}
+               },"400":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Bad request"
+                     }
+                  }
+               },"401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Email or password is wrong"
+                     }
+                  }
+               },"500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
                }
             }
          }
@@ -104,16 +137,26 @@
             "tags":["Auth"],
             "summery":"User logout",
             "security":[{"Bearer":[]}],
-            "parameters":[],
-            "requestBody":{},
             "responses":{
                "204":{
                   "description":"OK",
                   "content":{}
-               },
-               "401":{
-                  "description":"Not authenticated",
-                  "content":{}
+               },"401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },"500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
                }
             }
          }
@@ -123,7 +166,6 @@
             "tags":["User"],
             "summery":" Current user",
             "security":[{"Bearer":[]}],
-            "requestBody":{},
             "responses":{
                "200":{
                   "description":"OK",
@@ -134,10 +176,22 @@
                        }
                      }
                   }
-               },
-               "401":{
-                  "description":"Not authenticated",
-                  "content":{}
+               },"401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },"500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
                }
             }
          }
@@ -157,17 +211,39 @@
                   }
                }
             },
-            "responses":{
-               "200":{
-                  "description":"User profile updated successfully"
-               },
-               "401":{
-                  "description":"Not authenticated"
-               },
-               "404":{
-                  "description":"Not faund"
-               }
-            }
+            "responses":{ "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"User profile updated successfully"
+                     }
+                  }
+               },"401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },"404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not faund"
+                     }
+                  }
+               },"500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }}
          }
       },
        "auth/countDayInfo":{
@@ -177,7 +253,7 @@
             "security":[{"Bearer":[]}],
             "responses":{  
                "200":{
-                  "description":"Successes",
+                  "description":"OK",
                   "content":{
                      "application/json":{
                        "schema":{
@@ -185,12 +261,30 @@
                        }
                      }
                   }
-               },
-               "401":{
-                  "description":"Not authenticated"
-               },
-               "404":{
-                  "description":"Not faund"
+               },"401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },"404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not faund"
+                     }
+                  }
+               },"500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
                }
             }
          }
@@ -227,6 +321,14 @@
                        "example":"Not faund"
                      }
                   }
+               },"500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
                }
             }
          }
@@ -261,6 +363,14 @@
                      "application/json":{
                        "type":"string",
                        "example":"Not faund"
+                     }
+                  }
+               },"500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
                      }
                   }
                }
@@ -301,6 +411,14 @@
                        "example":"Missing required field email"
                      }
                   }
+               },"500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
                }
             }
             }},
@@ -308,6 +426,7 @@
          "get":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
+            "security":[{"Bearer":[]}],
             "responses":{
                "201":{
                   "description":"Successes",
@@ -319,11 +438,41 @@
                      }
                   }
                },
-               "400":{
-                  "description":"Bad request"
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
+      },"recires/category-list":{
+         "get":{
+            "tags":["Recipes"],
+            "summery":"Recipes for main page",
+            "security":[{"Bearer":[]}],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                       "schema":{
+                        "$ref":"#/components/schemas/Recipes.CategaryListResponse"
+                       }
+                     }
+                  }
                },
-               "409":{
-               "description":"Email in use"
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
                }
             }
          }
@@ -523,16 +672,29 @@
                "data":{
                   "type":"array",
                   "items":{
-                     "":{
                         "type":"object",
                         "properties":{
-                           "":{
-                              
+                           "_id":{
+                              "type":"string",
+                              "example":"Breakfast"
+                           },
+                           "meals":{
+                              "type":"array",
+                              "items":{
+                                 "properties":{         
+                                 }
+                              }
                            }
-                        }
-                     }
+                        }    
                   }
                }
+            }
+         },
+         "Recipes.CategaryListResponse":{
+            "type":"array",
+            "items":{
+               "type":"string",
+               "example":"Beef,Breakfast,Chicken,Dessert,Goat,Lamb,Miscellaneous,Pasta,Pork,Seafood,Side,Starter,Vegan,Vegetarian"
             }
          }
     
