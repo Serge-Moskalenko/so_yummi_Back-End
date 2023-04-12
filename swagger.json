@@ -1,7 +1,7 @@
 {
    "openapi":"3.0.1",
    "info":{
-    "version":"1.0.7",
+    "version":"1.0.8",
     "title": "Recipies API",
     "description":"Swagger for recipes"
    },
@@ -428,7 +428,7 @@
             "summery":"Recipes for main page",
             "security":[{"Bearer":[]}],
             "responses":{
-               "201":{
+               "200":{
                   "description":"Successes",
                   "content":{
                      "application/json":{
@@ -449,7 +449,8 @@
                }
             }
          }
-      },"recires/category-list":{
+      },
+      "recires/category-list":{
          "get":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
@@ -476,8 +477,418 @@
                }
             }
          }
+      },
+      "recires/byCategory":{
+         "get":{
+            "tags":["Recipes"],
+            "summery":"Recipes for main page",
+            "parameters":[{
+               "in":"path",
+               "name":"category",
+               "required":true
+            }],
+            "security":[{"Bearer":[]}],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                       "type":"array",
+                       "example":[]
+                     }
+                  }
+               },
+               "404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not found"
+                     }
+                  }
+               },
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "recires/byId":{
+         "get":{
+            "tags":["Recipes"],
+            "summery":"Recipes for main page",
+            "parameters":[{
+               "in":"path",
+               "name":"recipesId",
+               "required":true
+            }],
+            "security":[{"Bearer":[]}],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Recipes.ByIdResponse"
+                      }
+                     }
+                  }
+               },
+                "404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not found"
+                     }
+                  }
+               },
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "recires/search":{
+         "get":{
+            "tags":["Recipes"],
+            "summery":"Recipes for main page",
+            "parameters":[{
+               "in":"path",
+               "name":"word",
+               "required":true
+            }],
+            "security":[{"Bearer":[]}],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Recipes.ByIdResponse"
+                      }
+                     }
+                  }
+               },
+                "404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not found"
+                     }
+                  }
+               },
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "recires/popular-recipes":{
+         "get":{
+            "tags":["Recipes"],
+            "summery":"Recipes for main page",
+            "security":[{"Bearer":[]}],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Recipes.PopularRecipesResponse"
+                      }
+                     }
+                  }
+               },
+                "404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not found"
+                     }
+                  }
+               },
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "recipes/ownRecipes/addRecipe":{
+         "post":{
+            "tags":["Recipes"],
+            "summery":"Recipes for main page",
+            "security":[{"Bearer":[]}],
+            "requestBody":{
+               "description":"Registration object",
+               "required":true,
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "$ref":"#/components/schemas/Recipes.ByIdResponse"
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "201":{
+                  "description":"Recipe added successfully",
+                  "content":{
+                     "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/Recipes.ByIdResponse"
+                      }
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },
+                "404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not found"
+                     }
+                  }
+               },
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "recipes/ownRecipes/removeRecipe":{
+         "delete":{
+            "tags":["Recipes"],
+            "summery":"delete recipes",
+            "parameters":[{
+               "in":"path",
+               "name":"ownRecipesId",
+               "required":true
+            }],
+            "security":[{"Bearer":[]}],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                      "type":"object",
+                      "example":{"data":{"message": "Recipes deleted"}}
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },
+                "404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not found"
+                     }
+                  }
+               },
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "recipes/ownRecipes/getRecipes":{
+         "get":{
+            "tags":["Recipes"],
+            "summery":"user's recipes",
+            "security":[{"Bearer":[]}],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                      "example":[]
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "recipes/byIdToFavorite":{
+         "post":{
+            "tags":["Recipes"],
+            "summery":" add user's favorite recipes",
+            "security":[{"Bearer":[]}],
+            "parameters":[{
+               "in":"path",
+               "name":"recipesId",
+               "required":true
+            }],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                      "example":{"message": "Recepi added to favorite"}
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },"404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not found"
+                     }
+                  }
+               },
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "recipes/byIdToShoplist":{
+         "post":{
+            "tags":["Recipes"],
+            "summery":" Add user's shoping list",
+            "security":[{"Bearer":[]}],
+            "parameters":[{
+               "in":"path",
+               "name":"recipesId",
+               "required":true
+            }],
+             "requestBody":{
+               "description":"Registration object",
+               "required":true,
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "$ref":"#/components/schemas/Recipes.byIdToShoplistRequest"
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                      "example":{"message":  "Ingredient added to cart"}
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },"404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not found"
+                     }
+                  }
+               },
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
       }
-      
    },
    "components":{
       "schemas":{
@@ -694,11 +1105,107 @@
             "type":"array",
             "items":{
                "type":"string",
-               "example":"Beef,Breakfast,Chicken,Dessert,Goat,Lamb,Miscellaneous,Pasta,Pork,Seafood,Side,Starter,Vegan,Vegetarian"
+               "example":"Beef, Breakfast, Chicken, Dessert, Goat, Lamb, Miscellaneous, Pasta, Pork, Seafood, Side, Starter, Vegan, Vegetarian"
             }
+         },
+         "Recipes.ByIdResponse":{
+            "type":"array",
+            "items":{
+               "type":"object",
+               "properties":{
+                  "_id":{
+                      "example":"640cd5ac2d9fecf12e8897f4"
+                  },
+                  "title":{
+                     "example":"Chocolate Gateau"
+                  },
+                  "category":{
+                     "example":"Dessert"
+                  },
+                  "area":{
+                     "example":"Franch"
+                  },
+                  "instructions":{
+                     "example":"Preheat the oven to 180°C/350°F/Gas Mark 4. Grease and line the base of an 8 in round spring form cake tin with baking parchment\r\nBreak the chocolate into a heatproof bowl and place over a saucepan of gently simmering water and stir until it melts. (or melt in the microwave for 2-3 mins stirring occasionally)\r\nPlace the butter and sugar in a mixing bowl and cream together with a wooden spoon until light and fluffy. Gradually beat in the eggs, adding a little flour if the mixture begins to curdle. Fold in the remaining flour with the cooled, melted chocolate and milk. Mix until smooth.\r\nSpread the mixture into the cake tin and bake for 50-55 mins or until firm in the centre and a skewer comes out cleanly. Cool for 10 minutes, then turn out and cool completely."
+                  },
+                  "description":{
+                     "example":"A French dessert consisting of layers of chocolate sponge cake and chocolate ganache, typically topped with chocolate glaze and chocolate decorations."
+                  },
+                  "thumb":{
+                     "example":"https://www.themealdb.com/images/media/meals/tqtywx1468317395.jpg"
+                  },
+                  "preview":{
+                     "example":"https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560403/zyahxajhkglf8sisiqlh.jpg"
+                  },
+                  "time":{
+                     "example":"75"
+                  },
+                  "popularity":{
+                     "example":"0"
+                  },
+                  "favorite":{
+                     "example":[]
+                  },
+                  "likes":{
+                     "example":[]
+                  },
+                  "youtube":{
+                     "example":"https://www.youtube.com/watch?v=dsJtgmAhFF4"
+                  },
+                  "tags":{
+                     "example":["Cake","Chocolate","Desert","Pudding"]
+                  },
+                  "createdAt":{
+                     "example":"2023-03-11T19:25:33.240Z"
+                  },
+                  "updatedAt":{
+                     "example":"2023-03-17T11:56:31.323Z"
+                  },
+                  "ingredients":{
+                     "example":[{},{},{}]
+                  }
+               }
+            }
+         },
+         "Recipes.PopularRecipesResponse":{  
+            "type":"array",
+            "items":{
+               "example":{
+                  "_id":{
+                     "example":"640cd5ac2d9fecf12e8898fa"
+                  },
+                  "title":{
+                     "example":"Beef Rendang"
+                  },
+                  "description":{
+                     "example":"A spicy and aromatic Indonesian curry made with tender beef slow-cooked in coconut milk and a blend of flavorful spices like lemongrass, galangal, and turmeric. Served with a side of steamed rice for a hearty meal."
+                  },
+                  "preview":{
+                     "example":"https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678561437/y7ytkxdg8brzbzxhvylv.jpg"
+                  },
+                  "numberOfFavorites":{
+                     "example":22
+                  }
+               }
+            }
+         },
+         "Recipes.byIdToShoplistRequest":{
+             "type":"object",
+            "required":["ingredientId","measure"],
+             "properties":{
+               "ingredientId":{
+                  "type":"string",
+                  "description":"ingredient id",
+                  "example":"2"
+               },
+               "measure":{
+                  "type":"string",
+                  "description":"measure",
+                  "example":"200"
+               }
          }
-    
-      },
+    }
+   },
  "securitySchemes":{
             "Bearer":{
                "type":"http",
