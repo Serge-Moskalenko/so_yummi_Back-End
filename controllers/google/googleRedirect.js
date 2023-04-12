@@ -49,5 +49,5 @@ exports.googleRedirect = async (req, res) => {
     };
 
     
-    return res.redirect(`https://4106677.github.io/so-yummy-front-end/main?token=${user.token}`)
+    return res.redirect(`https://localhost:3000?token=${user.token}`)
 };

@@ -7,7 +7,7 @@
    },
    "cunsumes":["application/json","multipart/form-data"],
    "produces":["application/json"],
-   "servers":[{"url":"https://recipes-becend-49lg.onrender.com"}],
+   "servers":[{"url":"https://localhost:3000"}],
    "tags":[{
       "name":"Auth",
     "description":"Authorization endpoints"
@@ -15,6 +15,14 @@
    {
     "name":"User",
     "description":"Authorized user endpoint"
+   },
+   {
+      "name":"Subscribe",
+      "description":"Subscribe to So Yummy"
+   },
+   {
+      "name":"Recipes",
+      "description":"So Yummy's Recipes"
    }],
    "paths":{
       "auth/register":{
@@ -197,17 +205,28 @@
                   "description":"OK",
                   "content":{
                      "application/json":{
-                       "schema":{
-                        "$ref":"#/components/schemas/User.FavoritesRecipesResponse"
-                       }
+                       "type":"string",
+                        "example":"0"
                      }
                   }
                },
-               "401":{
-                  "description":"Not authenticated"
+                "401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
                },
                "404":{
-                  "description":"Not faund"
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not faund"
+                     }
+                  }
                }
             }
          }
@@ -222,21 +241,94 @@
                   "description":"OK",
                   "content":{
                      "application/json":{
+                        "type":"string",
+                        "example":"2"
+                     }
+                  }
+               },
+                "401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },
+               "404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not faund"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "subscribe":{
+         "post":{
+            "tags":["Subscribe"],
+            "summery":"Subscribe to So Yummy",
+            "security":[{"Bearer":[]}],
+            "requestBody":{
+               "description":"Registration object",
+               "required":true,
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "$ref":"#/components/schemas/SubscribeRequest"
+                     }
+                  }
+               }
+            },
+            "responses":{  
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Subscribe is successfully"
+                     }
+                  }
+               },
+               "400":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Missing required field email"
+                     }
+                  }
+               }
+            }
+            }},
+      "recires/main-page":{
+         "get":{
+            "tags":["Recipes"],
+            "summery":"Recipes for main page",
+            "responses":{
+               "201":{
+                  "description":"Successes",
+                  "content":{
+                     "application/json":{
                        "schema":{
-                        "$ref":"#/components/schemas/User.AuthOwnRecipesResponse"
+                        "$ref":"#/components/schemas/Recipes.MainPageResponse"
                        }
                      }
                   }
                },
-               "401":{
-                  "description":"Not authenticated"
+               "400":{
+                  "description":"Bad request"
                },
-               "404":{
-                  "description":"Not faund"
+               "409":{
+               "description":"Email in use"
                }
             }
          }
       }
+      
    },
    "components":{
       "schemas":{
@@ -406,13 +498,42 @@
             }
            }
          },
-         "User.FavoritesRecipesResponse":{
-            "type":"string",
-            "example":"0"
+         "SubscribeRequest":{
+             "type":"object",
+            "required":["email"],
+            "properties":{
+               "email":{
+                  "type":"string",
+                  "description":"User's email",
+                  "format":"email"
+               }     
+            }
          },
-         "User.AuthOwnRecipesResponse":{
-            "type":"string",
-            "example":"2"
+         "Recipes.MainPageResponse":{
+            "type":"object",
+            "properties":{
+               "status":{
+                  "type":"string",
+                  "example":"success"
+               },
+               "code":{
+                  "type":"string",
+                  "example":"201"
+               },
+               "data":{
+                  "type":"array",
+                  "items":{
+                     "":{
+                        "type":"object",
+                        "properties":{
+                           "":{
+                              
+                           }
+                        }
+                     }
+                  }
+               }
+            }
          }
     
       },
