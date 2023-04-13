@@ -9,7 +9,7 @@ const {
 const router = express.Router();
 
 router.get("/list", ingredientsList);
-router.get("/:ingredient", recipesByIngredient);
+router.get("/:ingredientId ", recipesByIngredient);
 router.get("/byId/:ingredientId", ingredientById);
 router.get("/byName/:ingredientName", ingredientByName);
 
