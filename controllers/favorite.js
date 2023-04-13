@@ -3,11 +3,11 @@ const { User } = require("../models/user");
 
 const getFavoriteRecipe = async (req, res) => {
   const { _id } = req.user;
-  const data = await User.findById(_id).populate("favorite");
+  const data = await User.findById(_id).populate("favorites");
   if (!data) {
     throw HttpError(404, "Not found");
   }
-  res.status(200).json(data.favorite);
+  res.status(200).json(data.favorites);
 };
 
 const removeFavoriteRecipe = async (req, res) => {
