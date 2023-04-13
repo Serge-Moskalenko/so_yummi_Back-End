@@ -268,7 +268,10 @@ const addFavoriteRecipe = async (req, res) => {
   if (!data) {
     throw HttpError(404, "Not found");
   }
-  res.status(200).json({ message: "Recepi added to favorite" });
+  res.status(200).json({
+    message: "Recepi added to favorite",
+    recipe: recipe,
+  });
 };
 
 const addIngredientToShoppingList = async (req, res) => {
