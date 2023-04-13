@@ -7,7 +7,7 @@ const getFavoriteRecipe = async (req, res) => {
   if (!data) {
     throw HttpError(404, "Not found");
   }
-  res.status(200).json(data.favorites);
+  res.status(200).json(data.favorite);
 };
 
 const removeFavoriteRecipe = async (req, res) => {
