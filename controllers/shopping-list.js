@@ -1,23 +1,20 @@
 const { HttpError, ctrlWrapper } = require("../helpers");
 const { User } = require("../models/user");
-const { Cart } = require("../models/cart");
 
 const getShoppingList = async (req, res) => {
-  const { pages = 1, limit = 5 } = req.query;
-  const skip = (pages - 1) * limit;
-  const user = req.user;
-  if (!user) {
-    throw HttpError(401);
+  const { _id } = req.user;
+  const data = await User.findById(_id).populate("shoppingList");
+  if (!data) {
+    throw HttpError(404, "Not found");
   }
-  const result = await Cart.find({ owner: { $eq: user._id } })
-    .skip(skip)
-    .limit(limit);
-
-  res.status(200).json(result);
+  res.status(200).json(data.shoppingList);
 };
 
 const removeShoppingList = async (req, res) => {
   const { _id } = req.user;
+  if (!req.user) {
+    throw HttpError(401);
+  }
   const { ingredientId } = req.params;
   const data = await User.findByIdAndUpdate(
     _id,
