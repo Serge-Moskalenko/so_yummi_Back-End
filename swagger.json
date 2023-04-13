@@ -1,13 +1,13 @@
 {
    "openapi":"3.0.1",
    "info":{
-    "version":"1.0.8",
+    "version":"1.0.9",
     "title": "Recipies API",
     "description":"Swagger for recipes"
    },
    "cunsumes":["application/json","multipart/form-data"],
    "produces":["application/json"],
-   "servers":[{"url":"https://localhost:3000"}],
+   "servers":[{"url":"https://recipes-becend-49lg.onrender.com"}],
    "tags":[{
       "name":"Auth",
     "description":"Authorization endpoints"
@@ -30,7 +30,12 @@
    {
       "name":"Favorite",
       "description":"So Yummy's Favorite"
-   }],
+   },
+   {
+      "name":"Shopping List",
+      "description":"So Yummy's Shopping List"
+   }
+],
    "paths":{
       "auth/register":{
          "post":{
@@ -1135,6 +1140,147 @@
                }
             }
          }
+      },
+      "favorite/":{
+         "delete":{
+            "tags":["Favorite"],
+            "summery":"Favorite",
+            "parameters":[{
+               "in":"path",
+               "name":"recipesId",
+               "required":true
+            }],
+            "security":[{"Bearer":[]}],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                      "example":{"message": "Recepi deleted"}
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },"404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not found"
+                     }
+                  }
+               },
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "shopping-list":{
+         "get":{
+            "tags":["Shopping List"],
+            "summery":"Shopping List",
+            "security":[{"Bearer":[]}],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                      "schema":{
+                        "$ref":"#/components/schemas/ShoppingListResponse"
+                     }
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },"404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not found"
+                     }
+                  }
+               },
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "shopping-list/":{
+         "delete":{
+            "tags":["Shopping List"],
+            "summery":"Shopping List",
+            "parameters":[{
+               "in":"path",
+               "name":"ingredientId",
+               "required":true
+            }],
+            "security":[{"Bearer":[]}],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "content":{
+                     "application/json":{
+                      "example":{"message": "Ingredient deleted from cart" }
+                     }
+                  }
+               },
+               "401":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not authenticated"
+                     }
+                  }
+               },"404":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"Not found"
+                     }
+                  }
+               },
+               "500":{
+                  "description":"Error",
+                  "content":{
+                     "application/json":{
+                       "type":"string",
+                       "example":"The server encountered an unexpected value that prevented it from setting up a request"
+                     }
+                  }
+               }
+            }
+         }
       }
    },
    "components":{
@@ -1574,8 +1720,139 @@
       "type":"array",
       "items":{
          "example":{
-            
+             "_id": "640cd5ac2d9fecf12e8898fa",
+        "title": "Beef Rendang",
+        "category": "Beef",
+        "area": "Malaysian",
+        "instructions": "Chop the spice paste ingredients and then blend it in a food processor until fine.\r\nHeat the oil in a stew pot, add the spice paste, cinnamon, cloves, star anise, and cardamom and stir-fry until aromatic. Add the beef and the pounded lemongrass and stir for 1 minute. Add the coconut milk, tamarind juice, water, and simmer on medium heat, stirring frequently until the meat is almost cooked. Add the kaffir lime leaves, kerisik (toasted coconut), sugar or palm sugar, stirring to blend well with the meat.\r\nLower the heat to low, cover the lid, and simmer for 1 to 1 1/2 hours or until the meat is really tender and the gravy has dried up. Add more salt and sugar to taste. Serve immediately with steamed rice and save some for overnight.",
+        "description": "A spicy and aromatic Indonesian curry made with tender beef slow-cooked in coconut milk and a blend of flavorful spices like lemongrass, galangal, and turmeric. Served with a side of steamed rice for a hearty meal.",
+        "thumb": "https://www.themealdb.com/images/media/meals/bc8v651619789840.jpg",
+        "preview": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678561437/y7ytkxdg8brzbzxhvylv.jpg",
+        "time": "120",
+        "popularity": 12,
+        "favorites": [
+            "640e11282752a54004e7b2be",
+            "6411fef75848f7534c62c591",
+            "64124dc022ca74f19bf4e02d",
+            "6412131bf5f602afeb51322b",
+            "64136b81f9ab2e3d387206df",
+            "64135631f9ab2e3d387201b9",
+            "6412cb161688c90e5427aee2",
+            "64175083db880553c84f5bc8",
+            "64188a98f48d9be56b60816e",
+            "6418b289bea08434b0a7eb66",
+            "6418b11ad139a9eed6c3fa8b",
+            "6418bf1963d5b7b1e97c5ca7",
+            "641970802264c318da9ac920",
+            "6418cedb63d5b7b1e97c613a",
+            "6418d67063d5b7b1e97c644c",
+            "6418a4dfe05e5b3d5b47adf0",
+            "6418bfaa63d5b7b1e97c5cce",
+            "6418d60563d5b7b1e97c6403",
+            "641974ef3c03cc641f8a52fa",
+            "641b56b15ece70f6eef42433",
+            "6418b0a8bea08434b0a7eaaa",
+            "641c0f3ac83e9c3d1a649f1b"
+        ],
+        "likes": [
+            "640f760b24894df9da7b4f82",
+            "6412fd2d79030e6a7b295474",
+            "6412131bf5f602afeb51322b",
+            "64135631f9ab2e3d387201b9",
+            "6412cb161688c90e5427aee2",
+            "6412ce7b1688c90e5427b00b",
+            "641807a63c1d9f12cba908c8",
+            "6418b11ad139a9eed6c3fa8b",
+            "6418bf1963d5b7b1e97c5ca7",
+            "6418b289bea08434b0a7eb66",
+            "641974ef3c03cc641f8a52fa",
+            "641c0f3ac83e9c3d1a649f1b"
+        ],
+        "youtube": "https://www.youtube.com/watch?v=Ot-dmfBaZrA",
+        "tags": [],
+        "createdAt": "2023-03-11T19:25:33.248Z",
+        "updatedAt": "2023-03-23T09:05:46.389Z",
+        "ingredients": [
+            {
+                "id": "640c2dd963a319ea671e365d",
+                "measure": "1lb"
+            },
+            {
+                "id": "640c2dd963a319ea671e3789",
+                "measure": "5 tbs"
+            },
+            {
+                "id": "640c2dd963a319ea671e36a6",
+                "measure": "1"
+            },
+            {
+                "id": "640c2dd963a319ea671e36a7",
+                "measure": "3"
+            },
+            {
+                "id": "640c2dd963a319ea671e382e",
+                "measure": "3"
+            },
+            {
+                "id": "640c2dd963a319ea671e3683",
+                "measure": "3"
+            },
+            {
+                "id": "640c2dd963a319ea671e36aa",
+                "measure": "1 cup "
+            },
+            {
+                "id": "640c2dd963a319ea671e378f",
+                "measure": "1 cup "
+            },
+            {
+                "id": "640c2dd963a319ea671e3778",
+                "measure": "2 tbs"
+            },
+            {
+                "id": "640c2dd963a319ea671e3716",
+                "measure": "6"
+            },
+            {
+                "id": "640c2dd963a319ea671e3774",
+                "measure": "1 tbs"
+            },
+            {
+                "id": "640c2dd963a319ea671e368c",
+                "measure": "5"
+            }
+        ]
          }
+      }
+    },
+    "ShoppingListResponse":{
+      "type":"array",
+      "items":{
+         "example":[{ "_id": "64342b54c383afdbc0d485ba",
+        "ingredientId": "640c2dd963a319ea671e365d",
+        "ingredientInfo": [
+            {
+                "ttl": "Beef",
+                "thb": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564124/zzxbvvvye3pnooygfdgg.png"
+            }
+        ],
+        "measure": "1kg",
+        "owner": "6433cd2cfedd041bbb8d755e",
+        "createdAt": "2023-04-10T15:29:24.194Z",
+        "updatedAt": "2023-04-10T15:29:24.194Z"}, {
+        "_id": "6434f8c3bfe64d9470d51ead",
+        "ingredientId": "640c2dd963a319ea671e372c",
+        "ingredientInfo": [
+            {
+                "ttl": "Olive Oil",
+                "thb": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564854/hzcfvlja7hmbp84z7f3q.png"
+            }
+        ],
+        "measure": "5 tablespoons",
+        "owner": "6433cd2cfedd041bbb8d755e",
+        "createdAt": "2023-04-11T06:05:55.054Z",
+        "updatedAt": "2023-04-11T06:05:55.054Z"
+    }]
       }
     }
    },
