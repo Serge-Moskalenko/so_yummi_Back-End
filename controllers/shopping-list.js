@@ -15,11 +15,11 @@ const removeShoppingList = async (req, res) => {
   if (!req.user) {
     throw HttpError(401);
   }
-  const { ingredientId } = req.params;
+  const { ingredientCartId } = req.params;
   const data = await User.findByIdAndUpdate(
     _id,
     {
-      $pull: { shoppingList: ingredientId },
+      $pull: { shoppingList: ingredientCartId },
     },
     { new: true }
   );
