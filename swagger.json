@@ -1,7 +1,7 @@
 {
    "openapi":"3.0.1",
    "info":{
-    "version":"1.0.9",
+    "version":"1.1.0",
     "title": "Recipies API",
     "description":"Swagger for recipes"
    },
@@ -37,7 +37,7 @@
    }
 ],
    "paths":{
-      "auth/register":{
+      "/auth/register":{
          "post":{
             "tags":["Auth"],
             "summery":"User registration",
@@ -91,7 +91,7 @@
             }
          }
       },
-      "auth/login":{
+      "/auth/login":{
          "post":{
             "tags":["Auth"],
             "summery":"User login",
@@ -144,7 +144,7 @@
             }
          }
       },
-      "auth/logout":{
+      "/auth/logout":{
          "post":{
             "tags":["Auth"],
             "summery":"User logout",
@@ -173,7 +173,7 @@
             }
          }
       },
-      "auth/current":{
+      "/auth/current":{
          "get":{
             "tags":["User"],
             "summery":" Current user",
@@ -208,7 +208,7 @@
             }
          }
       },
-     "auth/updateUser":{
+     "/auth/updateUser":{
          "patch":{
             "tags":["User"],
             "summery":"User's update",
@@ -258,7 +258,7 @@
                }}
          }
       },
-       "auth/countDayInfo":{
+       "/auth/countDayInfo":{
          "get":{
             "tags":["User"],
             "summery":"User's day's auth in SoYummy",
@@ -301,7 +301,7 @@
             }
          }
       },
-      "auth/favoritesRecipes":{
+      "/auth/favoritesRecipes":{
          "get":{
             "tags":["User"],
             "summery":"User's favorite recipes in SoYummy",
@@ -345,7 +345,7 @@
             }
          }
       },
-      "auth/authOwnRecipes":{
+      "/auth/authOwnRecipes":{
          "get":{
             "tags":["User"],
             "summery":"User's favorite recipes in SoYummy",
@@ -389,7 +389,7 @@
             }
          }
       },
-      "subscribe":{
+      "/subscribe":{
          "post":{
             "tags":["Subscribe"],
             "summery":"Subscribe to So Yummy",
@@ -434,7 +434,7 @@
                }
             }
             }},
-      "recires/main-page":{
+      "/recires/main-page":{
          "get":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
@@ -462,7 +462,7 @@
             }
          }
       },
-      "recires/category-list":{
+      "/recires/category-list":{
          "get":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
@@ -490,7 +490,7 @@
             }
          }
       },
-      "recires/byCategory":{
+      "/recires/byCategory":{
          "get":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
@@ -531,7 +531,7 @@
             }
          }
       },
-      "recires/byId":{
+      "/recires/byId":{
          "get":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
@@ -573,7 +573,7 @@
             }
          }
       },
-      "recires/search":{
+      "/recires/search":{
          "get":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
@@ -615,7 +615,7 @@
             }
          }
       },
-      "recires/popular-recipes":{
+      "/recires/popular-recipes":{
          "get":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
@@ -652,7 +652,7 @@
             }
          }
       },
-      "recipes/ownRecipes/addRecipe":{
+      "/recipes/ownRecipes/addRecipe":{
          "post":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
@@ -709,7 +709,7 @@
             }
          }
       },
-      "recipes/ownRecipes/removeRecipe":{
+      "/recipes/ownRecipes/removeRecipe":{
          "delete":{
             "tags":["Recipes"],
             "summery":"delete recipes",
@@ -759,7 +759,7 @@
             }
          }
       },
-      "recipes/ownRecipes/getRecipes":{
+      "/recipes/ownRecipes/getRecipes":{
          "get":{
             "tags":["Recipes"],
             "summery":"user's recipes",
@@ -794,7 +794,7 @@
             }
          }
       },
-      "recipes/byIdToFavorite":{
+      "/recipes/byIdToFavorite":{
          "post":{
             "tags":["Recipes"],
             "summery":" add user's favorite recipes",
@@ -842,7 +842,7 @@
             }
          }
       },
-      "recipes/byIdToShoplist":{
+      "/recipes/byIdToShoplist":{
          "post":{
             "tags":["Recipes"],
             "summery":" Add user's shoping list",
@@ -901,7 +901,7 @@
             }
          }
       },
-      "ingredients/list":{
+      "/ingredients/list":{
          "get":{
             "tags":["Ingredients"],
             "summery":" Ingredients",
@@ -946,7 +946,7 @@
             }
          }
       },
-      "ingredients":{
+      "/ingredients":{
          "get":{
             "tags":["Ingredients"],
             "summery":" Ingredients",
@@ -996,7 +996,7 @@
             }
          }
       },
-      "ingredients/byId":{
+      "/ingredients/byId":{
          "get":{
             "tags":["Ingredients"],
             "summery":" Ingredients",
@@ -1046,7 +1046,7 @@
             }
          }
       },
-      "ingredients/byName":{
+      "/ingredients/byName":{
          "get":{
             "tags":["Ingredients"],
             "summery":" Ingredients",
@@ -1096,7 +1096,7 @@
             }
          }
       },
-      "favorite":{
+      "/favorite":{
          "get":{
             "tags":["Favorite"],
             "summery":"Favorite",
@@ -1141,7 +1141,7 @@
             }
          }
       },
-      "favorite/":{
+      "/favorite/":{
          "delete":{
             "tags":["Favorite"],
             "summery":"Favorite",
@@ -1189,7 +1189,7 @@
             }
          }
       },
-      "shopping-list":{
+      "/shopping-list":{
          "get":{
             "tags":["Shopping List"],
             "summery":"Shopping List",
@@ -1234,7 +1234,7 @@
             }
          }
       },
-      "shopping-list/":{
+      "/shopping-list/":{
          "delete":{
             "tags":["Shopping List"],
             "summery":"Shopping List",
