@@ -188,7 +188,7 @@ const addRecipes = async (req, res) => {
   if (!user) {
     throw HttpError(401);
   }
-  const { preview, title } = req.body;
+  const { preview, title, ingredients } = req.body;
 
   if (preview) {
     try {
@@ -198,6 +198,14 @@ const addRecipes = async (req, res) => {
       });
       req.body.preview = uploadedImage.url;
     } catch (error) {}
+  }
+  if (ingredients) {
+    const ingredientObjectId = ingredients.map((ingr) => {
+      id = ObjectId(`${ingr.id}`);
+      return { id, measure: ingr.measure };
+    });
+    console.log(ingredientObjectId);
+    req.body.ingredients = ingredientObjectId;
   }
   const result = await Recipes.create({
     ...req.body,
