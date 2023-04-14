@@ -1,7 +1,7 @@
 {
    "openapi":"3.0.1",
    "info":{
-    "version":"1.1.1",
+    "version":"1.1.2",
     "title": "Recipies API",
     "description":"The release version of the swagger for the Website is So Yummy"
    },
@@ -442,6 +442,19 @@
          "get":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
+            "parameters":[{
+               "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 4
+            }],
             "security":[{"Bearer":[]}],
             "responses":{
                "200":{
