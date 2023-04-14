@@ -507,7 +507,7 @@
             }
          }
       },
-      "/recipes/byCategory":{
+      "/recipes/byCategory/{category}":{
          "get":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
@@ -549,7 +549,7 @@
             }
          }
       },
-      "/recipes/byId":{
+      "/recipes/byId/{recipesId}":{
          "get":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
@@ -591,7 +591,7 @@
             }
          }
       },
-      "/recipes/search":{
+      "/recipes/search/{word}":{
          "get":{
             "tags":["Recipes"],
             "summery":"Recipes for main page",
@@ -742,7 +742,7 @@
                "content":{
                   "application/json":{
                      "schema":{
-                        "$ref":"#/components/schemas/Recipes.ByIdResponse"
+                        "$ref":"#/components/schemas/Recipes.OwnRecipesAddRecipe"
                      }
                   }
                }
@@ -753,7 +753,7 @@
                   "content":{
                      "application/json":{
                       "schema":{
-                        "$ref":"#/components/schemas/Recipes.ByIdResponse"
+                        "$ref":"#/components/schemas/Recepis.OwnRecipesAddResponse"
                       }
                      }
                   }
@@ -788,7 +788,7 @@
             }
          }
       },
-      "/recipes/ownRecipes/removeRecipe":{
+      "/recipes/ownRecipes/removeRecipe/{ownRecipesId}":{
          "delete":{
             "tags":["OwnRecipes"],
             "summery":"delete recipes",
@@ -838,7 +838,7 @@
             }
          }
       },
-      "/recipes/byIdToFavorite":{
+      "/recipes/byIdToFavorite/{recipesId}":{
          "post":{
             "tags":["Recipes"],
             "summery":" add user's favorite recipes",
@@ -891,13 +891,7 @@
             "tags":["Recipes"],
             "summery":" Add user's shoping list",
             "security":[{"Bearer":[]}],
-            "parameters":[{
-               "in":"path",
-               "name":"recipesId",
-               "required":true
-            }],
              "requestBody":{
-               "description":"Registration object",
                "required":true,
                "content":{
                   "application/json":{
@@ -990,7 +984,7 @@
             }
          }
       },
-      "/ingredients":{
+      "/ingredients/{ingredient}":{
          "get":{
             "tags":["Ingredients"],
             "summery":" Ingredients",
@@ -1040,7 +1034,7 @@
             }
          }
       },
-      "/ingredients/byId":{
+      "/ingredients/byId/{ingredientId}":{
          "get":{
             "tags":["Ingredients"],
             "summery":" Ingredients",
@@ -1090,7 +1084,7 @@
             }
          }
       },
-      "/ingredients/byName":{
+      "/ingredients/byName/{ingredientName}":{
          "get":{
             "tags":["Ingredients"],
             "summery":" Ingredients",
@@ -1183,7 +1177,9 @@
                   }
                }
             }
-         },
+         }
+      },
+      "/favorite/{recipesId}":{
          "delete":{
             "tags":["Favorite"],
             "summery":"Favorite",
@@ -1229,8 +1225,7 @@
                   }
                }
             }
-         }
-      },
+         }},
       "/shopping-list":{
          "get":{
             "tags":["Shopping List"],
@@ -1274,7 +1269,9 @@
                   }
                }
             }
-         },
+         }
+      },
+      "/shoping-list/{ingredientId}":{
          "delete":{
             "tags":["Shopping List"],
             "summery":"Shopping List",
@@ -1652,7 +1649,7 @@
                "ingredientId":{
                   "type":"string",
                   "description":"ingredient id",
-                  "example":"2"
+                  "example":"640c2dd963a319ea671e365c"
                },
                "measure":{
                   "type":"string",
@@ -2002,6 +1999,67 @@
             }
         ]
     },{}]
+    },
+    "Recipes.OwnRecipesAddRecipe":{
+      "example":{
+    "title": "Chocolate Gateau",
+    "category": "Dessert",
+    "area": "Franch",
+    "instructions": "Preheat the oven to 180°C/350°F/Gas Mark 4. Grease and line the base of an 8 in round spring form cake tin with baking parchment\r\nBreak the chocolate into a heatproof bowl and place over a saucepan of gently simmering water and stir until it melts. (or melt in the microwave for 2-3 mins stirring occasionally)\r\nPlace the butter and sugar in a mixing bowl and cream together with a wooden spoon until light and fluffy. Gradually beat in the eggs, adding a little flour if the mixture begins to curdle. Fold in the remaining flour with the cooled, melted chocolate and milk. Mix until smooth.\r\nSpread the mixture into the cake tin and bake for 50-55 mins or until firm in the centre and a skewer comes out cleanly. Cool for 10 minutes, then turn out and cool completely.",
+    "description": "A French dessert consisting of layers of chocolate sponge cake and chocolate ganache, typically topped with chocolate glaze and chocolate decorations.",
+    "thumb": "https://www.themealdb.com/images/media/meals/tqtywx1468317395.jpg",
+    "preview": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560403/zyahxajhkglf8sisiqlh.jpg",
+    "time": "75",
+    "youtube": "https://www.youtube.com/watch?v=dsJtgmAhFF4",
+    "tags": [
+      "Cake",
+      "Chocolate",
+      "Desert",
+      "Pudding"
+    ],
+   
+    "ingredients": [
+      {},
+      {},
+      {}
+    ]
+  }
+    },
+    "Recepis.OwnRecipesAddResponse":{
+     "example": {
+  "data": {
+    "result": {
+      "title": "Chocolate Gateau",
+      "category": "Dessert",
+      "area": "Franch",
+      "instructions": "Preheat the oven to 180°C/350°F/Gas Mark 4. Grease and line the base of an 8 in round spring form cake tin with baking parchment\r\nBreak the chocolate into a heatproof bowl and place over a saucepan of gently simmering water and stir until it melts. (or melt in the microwave for 2-3 mins stirring occasionally)\r\nPlace the butter and sugar in a mixing bowl and cream together with a wooden spoon until light and fluffy. Gradually beat in the eggs, adding a little flour if the mixture begins to curdle. Fold in the remaining flour with the cooled, melted chocolate and milk. Mix until smooth.\r\nSpread the mixture into the cake tin and bake for 50-55 mins or until firm in the centre and a skewer comes out cleanly. Cool for 10 minutes, then turn out and cool completely.",
+      "description": "A French dessert consisting of layers of chocolate sponge cake and chocolate ganache, typically topped with chocolate glaze and chocolate decorations.",
+      "thumb": "https://www.themealdb.com/images/media/meals/tqtywx1468317395.jpg",
+      "preview": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560403/zyahxajhkglf8sisiqlh.jpg",
+      "time": "75",
+      "popularity": 0,
+      "favorites": [],
+      "likes": [],
+      "youtube": "https://www.youtube.com/watch?v=dsJtgmAhFF4",
+      "tags": [
+        "Cake",
+        "Chocolate",
+        "Desert",
+        "Pudding"
+      ],
+      "ingredients": [
+        {},
+        {},
+        {}
+      ],
+      "owner": "64390e84315124c818387b03",
+      "_id": "64395b1be031a3bf1f138b0e",
+      "createdAt": "2023-04-14T13:54:35.094Z",
+      "updatedAt": "2023-04-14T13:54:35.094Z"
+    },
+    "message": "Recipe added successfully"
+  }
+}
     }
    },
  "securitySchemes":{
