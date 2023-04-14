@@ -1,7 +1,7 @@
 {
    "openapi":"3.0.1",
    "info":{
-    "version":"1.1.2",
+    "version":"1.1.3",
     "title": "Recipies API",
     "description":"The release version of the swagger for the Website is So Yummy"
    },
@@ -886,10 +886,15 @@
             }
          }
       },
-      "/recipes/byIdToShoplist":{
+      "/recipes/byIdToShoplist/{recipesId}":{
          "post":{
             "tags":["Recipes"],
             "summery":" Add user's shoping list",
+            "parameters":[{
+               "in":"path",
+               "name":"recipesId",
+               "required":true
+            }],
             "security":[{"Bearer":[]}],
              "requestBody":{
                "required":true,
@@ -1271,13 +1276,13 @@
             }
          }
       },
-      "/shoping-list/{ingredientId}":{
+      "/shopping-list/{ingredientCartId}":{
          "delete":{
             "tags":["Shopping List"],
             "summery":"Shopping List",
             "parameters":[{
                "in":"path",
-               "name":"ingredientId",
+               "name":"ingredientCartId",
                "required":true
             }],
             "security":[{"Bearer":[]}],
