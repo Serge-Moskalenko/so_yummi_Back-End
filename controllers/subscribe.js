@@ -2,7 +2,7 @@ const { HttpError, ctrlWrapper, sendEmail } = require("../helpers");
 
 const subscribeUser = async (req, res) => {
   const { email } = req.body;
-  if (Object.keys(req.body).length === 0) {
+  if (!email) {
     throw HttpError(400, "Missing required field email");
   }
   const subscribeEmail = {
