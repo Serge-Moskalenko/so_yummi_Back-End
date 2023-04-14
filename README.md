@@ -8,7 +8,7 @@ https://recipes-becend-49lg.onrender.com/api-docs
 * npm start — start the server in production mode
 * npm run start:dev — start the server in development mode
 # Tech Stack
-Node, Express
+Node.js, Express
 # Development team
 * https://github.com/Serge-Moskalenko
 * https://github.com/ViktoriiaOstrojinskaya
