@@ -21,7 +21,7 @@ Node.js, Express
 * implementation of google authorization
 # Viktoriia Ostrojinskaya:
 * implementation of user authorization
-* interaction with Сlaundery
+* interaction with Cloudinary
 * writing routes /subscribe
 * writing routes /favorite
 * writing routes /shopping-list
