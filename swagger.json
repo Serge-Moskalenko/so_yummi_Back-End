@@ -3,7 +3,7 @@
    "info":{
     "version":"1.1.1",
     "title": "Recipies API",
-    "description":"The release version of the swagger for the web application is So Yummy"
+    "description":"The release version of the swagger for the Website is So Yummy"
    },
    "cunsumes":["application/json","multipart/form-data"],
    "produces":["application/json"],
