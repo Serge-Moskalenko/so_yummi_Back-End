@@ -599,6 +599,19 @@
                "in":"path",
                "name":"word",
                "required":true
+            },
+         {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 4
             }],
             "security":[{"Bearer":[]}],
             "responses":{
@@ -675,6 +688,19 @@
             "tags":["OwnRecipes"],
             "summery":"user's recipes",
             "security":[{"Bearer":[]}],
+            "parameters":[{
+               "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 4
+            }],
             "responses":{
                "200":{
                   "description":"OK",
